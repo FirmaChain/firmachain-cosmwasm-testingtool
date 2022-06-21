@@ -18,8 +18,8 @@ const Header = () => {
         <LeftContainer>
           <Logo src='/images/firma_chain_title.svg' />
           <LinkList>
-            <LinkItem onClick={() => window.open('https://station-testnet.firmachain.dev')}>FIRMA STATION</LinkItem>
-            <LinkItem onClick={() => window.open('https://explorer-testnet.firmachain.dev')}>BLOCK EXPLORER</LinkItem>
+            <LinkItem onClick={() => window.open(process.env.REACT_APP_STATION)}>FIRMA STATION</LinkItem>
+            <LinkItem onClick={() => window.open(process.env.REACT_APP_EXPLORER)}>BLOCK EXPLORER</LinkItem>
           </LinkList>
         </LeftContainer>
         <RightContainer>
