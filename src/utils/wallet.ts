@@ -1,7 +1,5 @@
-import { FirmaSDK, FirmaUtil } from '@firmachain/firma-js';
+import { FirmaSDK } from '@firmachain/firma-js';
 import { FIRMACHAIN_CONFIG } from '../config';
-
-import { AccessConfig, AccessType } from 'cosmjs-types/cosmwasm/wasm/v1/types';
 
 const useFirma = () => {
   const firmaSDK = new FirmaSDK(FIRMACHAIN_CONFIG);
