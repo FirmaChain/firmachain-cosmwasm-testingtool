@@ -1,13 +1,11 @@
 import React from 'react';
-import { InputFileWrapper, Divider, FileIconWrapper, AttachFileIcon } from './styles';
+import { InputFileWrapper, UploadTypo, UploadButton } from './styles';
 
 const InputFile = () => {
   return (
     <InputFileWrapper>
-      <Divider />
-      <FileIconWrapper>
-        <AttachFileIcon />
-      </FileIconWrapper>
+      <UploadTypo>Please upload the file.</UploadTypo>
+      <UploadButton>Upload</UploadButton>
     </InputFileWrapper>
   );
 };

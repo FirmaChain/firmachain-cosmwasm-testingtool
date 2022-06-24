@@ -1,28 +1,27 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { HANDLE_WALLET_ADDRESS, HANDLE_WALLET_INIT, HANDLE_WALLET_LEDGER } from '../types';
+import { HANDLE_WALLET_DATA, HANDLE_WALLET_BALANCE } from '../types';
 
 export interface IWalletState {
   address: string;
-  timeKey: string;
-  isInit: boolean;
-  isLedger: boolean;
+  mnemonic: string;
+  privateKey: string;
+  balance: string;
 }
 
 const initialState = {
   address: '',
-  timeKey: '',
-  isInit: false,
-  isLedger: false,
+  mnemonic: '',
+  privateKey: '',
+  balance: '',
 };
 
 export default createReducer(initialState, {
-  [HANDLE_WALLET_ADDRESS]: (state: IWalletState, { address }) => {
+  [HANDLE_WALLET_DATA]: (state: IWalletState, { address, mnemonic, privateKey }) => {
     state.address = address;
+    state.mnemonic = mnemonic;
+    state.privateKey = privateKey;
   },
-  [HANDLE_WALLET_INIT]: (state: IWalletState, { isInit }) => {
-    state.isInit = isInit;
-  },
-  [HANDLE_WALLET_LEDGER]: (state: IWalletState, { isLedger }) => {
-    state.isLedger = isLedger;
+  [HANDLE_WALLET_BALANCE]: (state: IWalletState, { balance }) => {
+    state.balance = balance;
   },
 });

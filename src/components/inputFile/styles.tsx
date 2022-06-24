@@ -1,31 +1,36 @@
 import styled from 'styled-components';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 export const InputFileWrapper = styled.div`
-  width: 200px;
-  height: 30px;
-  border-radius: 4px;
-  background-color: #00000080;
-  border: 1px solid #efefef80;
+  width: 100%;
+  height: 98px;
   color: white;
   position: relative;
+  border: solid 1px #707070;
+  background-color: rgba(52, 54, 62, 0.75);
+  border-style: dashed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+`;
+
+export const UploadTypo = styled.div`
+  font-size: 1.6rem;
+  color: #939393;
+`;
+export const UploadButton = styled.div`
+  width: 150px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 4px;
+  border: solid 1px #efefef;
+  color: #efefef;
+  font-size: 1.4rem;
+  text-align: center;
+  opacity: 0.8;
   cursor: pointer;
+  &:hover {
+    opacity: 1;
+  }
 `;
-
-export const Divider = styled.div`
-  width: 1px;
-  height: 20px;
-  background-color: #888;
-  position: absolute;
-  top: 5px;
-  right: 30px;
-`;
-
-export const FileIconWrapper = styled.div`
-  color: #444;
-  position: absolute;
-  top: 7px;
-  right: 8px;
-`;
-
-export { AttachFileIcon };

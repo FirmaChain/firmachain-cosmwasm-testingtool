@@ -5,12 +5,9 @@ export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  flex: 1 100%;
   position: relative;
-  margin: 0;
   padding: 0;
-  margin-bottom: -1px;
+  flex-grow: 1;
 `;
 
 export const BackgroundBlur = styled.div`
@@ -49,15 +46,32 @@ export const BackgroundVideo = styled.video`
 export const Title = styled.div`
   width: 100%;
   max-width: 600px;
-  font-size: 3rem;
+  text-align: center;
+  font-size: 4rem;
   color: white;
-  margin: 10px;
+  margin: 16px;
+  font-family: 'Metropolis-ExtraBold' !important;
 `;
 
 export const SubTitle = styled.div`
-  width: 100%;
-  max-width: 600px;
-  font-size: 2.4rem;
+  width: 170px;
+  height: 35px;
+  line-height: 37px;
   color: white;
-  margin: 20px 0 10px 0;
+  background-color: #3252d3;
+  text-align: center;
+  font-size: 1.6rem;
+  border-radius: 60px;
+  font-family: 'Metropolis-Medium' !important;
+  margin-bottom: 34px;
+`;
+
+export const MainIcon = styled.div`
+  width: 55px;
+  height: 55px;
+  background-image: url('${({ theme }) => theme.urls.logo}');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin-top: 100px;
 `;

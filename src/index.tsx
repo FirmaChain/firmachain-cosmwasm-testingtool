@@ -16,7 +16,7 @@ ReactDOM.render(
         maxSnack={3}
         style={{ fontSize: '1.2rem' }}
         anchorOrigin={{
-          vertical: 'bottom',
+          vertical: 'top',
           horizontal: 'center',
         }}
       >

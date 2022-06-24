@@ -2,40 +2,91 @@ import styled from 'styled-components';
 
 export const CosmWasmContainer = styled.div`
   width: 100%;
-  background-color: #00000080;
-  max-width: 600px;
-  min-height: 360px;
-  max-height: 360px;
+  max-width: 900px;
+  height: 565px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  margin-bottom: 80px;
 `;
 
 export const TabMenuList = styled.div<{ currentTab: number }>`
   display: flex;
   align-items: center;
+  margin: 0;
+  padding: 0;
   ${(props) => `& > div:nth-child(${props.currentTab + 1}) {
-    color:${props.theme.colors.mainblue};
-    border-bottom: 2px solid ${props.theme.colors.mainblue}
+    color:#fff;
+    border-top: solid 4px #2b7cff;
+    background-color:rgba(28, 29, 34, 0.9);
+    & > div { 
+      border-right:0;
+    }
   }`};
+
+  ${(props) => `& > div:nth-child(${props.currentTab}) {
+    & > div { 
+      border-right:0;
+    }
+  }`};
+
+  & > div:last-child > div {
+    border-right: 0;
+  }
+`;
+export const TabText = styled.div`
+  border-right: 1px solid #616368;
 `;
 
 export const TabMenu = styled.div`
-  padding: 5px 20px;
+  background-color: rgba(42, 44, 51, 0.9);
+  border-top: solid 4px #ffffff00;
   cursor: pointer;
   color: white;
   font-weight: 400;
-`;
-
-export const TabContents = styled.div`
-  width: 100%;
-  flex: 0 100%;
-  margin-top: 20px;
+  flex-grow: 1;
+  text-align: center;
+  height: 48px;
+  font-size: 2rem;
+  color: #acacac;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 10px;
+`;
+
+export const TabContents = styled.div<{ currentTab: number }>`
+  width: calc(100% - 80px);
+  flex: 0 100%;
+  display: flex;
+  background-color: rgba(28, 29, 34, 0.9);
+  padding: 40px;
+  ${(props) => `& > div:nth-child(${props.currentTab + 1}) {
+    display:flex;
+  }`};
+`;
+
+export const TabContent = styled.div`
+  width: 100%;
+  display: none;
+  gap: 30px;
+  align-items: stretch;
+`;
+
+export const LeftContent = styled.div`
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`;
+export const RightContent = styled.div`
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 `;
 
 export const NeedLogin = styled.div`
@@ -48,22 +99,27 @@ export const NeedLogin = styled.div`
 
 export const InputWrap = styled.div`
   color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 `;
 export const Label = styled.div`
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   margin: 10px 0;
+  color: #dddddd;
 `;
 export const Input = styled.div``;
 
 export const GeneralButton = styled.div`
-  width: 100px;
-  height: 30px;
-  line-height: 30px;
+  width: 100%;
+  height: 54px;
+  line-height: 54px;
   text-align: center;
   color: white;
-  background-color: ${({ theme }) => theme.colors.mainblue};
-  border-radius: 4px;
+  background-color: rgba(52, 54, 62, 0.75);
   cursor: pointer;
-  margin: 20px 0;
   font-size: 1.4rem;
+  color: #8d8d8d;
 `;

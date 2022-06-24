@@ -1,8 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Routes from './routes';
-import Header from './organisms/header';
-import Footer from './organisms/footer';
 
 import './default.css';
 
@@ -14,9 +12,7 @@ const App = () => {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <MainContainer>
-          <Header />
           <Routes />
-          <Footer />
         </MainContainer>
       </ThemeProvider>
     </BrowserRouter>

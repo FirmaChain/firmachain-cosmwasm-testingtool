@@ -1,19 +1,18 @@
 import styled from 'styled-components';
 
 export const FooterContainer = styled.div`
-  position: relative;
+  position: absolute;
+  bottom: 0;
   z-index: 1;
   width: 100%;
-  height: 50px;
-  min-height: 50px;
-  display: flex;
-  background-color: rgb(33, 33, 47);
+  height: 40px;
+  min-height: 40px;
   color: #ccc;
   font-size: 1.3rem;
   display: flex;
-  flex: 0 50px;
   align-items: center;
   justify-content: center;
+  background-color: rgba(42, 44, 51, 0.6);
 `;
 
 export const FooterWrapper = styled.div`

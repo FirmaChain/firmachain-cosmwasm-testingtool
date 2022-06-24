@@ -176,3 +176,14 @@ body > #root > div {
 html {
   font-size: 62.5%;
 }
+
+
+@font-face {
+  src: url("./fonts/Metropolis-ExtraBold.otf") format("opentype");
+  font-family: "Metropolis-ExtraBold";
+}
+
+@font-face {
+  src: url("./fonts/Metropolis-Medium.otf") format("opentype");
+  font-family: "Metropolis-Medium";
+}
