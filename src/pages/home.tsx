@@ -4,6 +4,7 @@ import Header from '../organisms/header';
 import Footer from '../organisms/footer';
 import {
   ContentContainer,
+  ContentWrapper,
   BackgroundBlur,
   BackgroundBox,
   BackgroundVideo,
@@ -22,10 +23,12 @@ const Home = () => {
           <source src='/assets/background.mp4' type='video/mp4' />
         </BackgroundVideo>
       </BackgroundBox>
-      <MainIcon />
-      <Title>COSMWASM CONTRACT</Title>
-      <SubTitle>TESTING TOOL</SubTitle>
-      <CosmWasm />
+      <ContentWrapper>
+        <MainIcon />
+        <Title>COSMWASM CONTRACT</Title>
+        <SubTitle>TESTING TOOL</SubTitle>
+        <CosmWasm />
+      </ContentWrapper>
       <Footer />
     </ContentContainer>
   );

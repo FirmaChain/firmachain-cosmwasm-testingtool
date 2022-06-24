@@ -5,9 +5,18 @@ export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   position: relative;
   padding: 0;
   flex-grow: 1;
+`;
+export const ContentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 `;
 
 export const BackgroundBlur = styled.div`

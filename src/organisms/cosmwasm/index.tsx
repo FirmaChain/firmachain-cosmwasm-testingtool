@@ -20,7 +20,7 @@ import {
 } from './styles';
 
 const CosmWasm = () => {
-  const [currentTab, setTab] = useState(3);
+  const [currentTab, setTab] = useState(0);
   const [storeAccessConfig, setStoreAccessConfig] = useState(0);
   const [storeAddress, setStoreAddress] = useState('');
   const [instantiateCodeId, setInstantiateCodeId] = useState('');
