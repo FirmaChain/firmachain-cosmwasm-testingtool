@@ -37,14 +37,22 @@ const WalletModal = () => {
   const walletModalState = useSelector((state: rootState) => state.modal.wallet);
   const walletState = useSelector((state: rootState) => state.wallet);
   const { enqueueSnackbar } = useSnackbar();
-  const { getNewWallet, getRecoverWallet } = useFirma();
+  const { getNewWallet, getRecoverWallet, getUserBalance } = useFirma();
   const [currentWalletTab, setWalletTab] = useState(0);
+  const [balance, setBalance] = useState('0');
   const [recoverMnemonic, setRecoverMnemonic] = useState('');
   const [walletData, setWalletData] = useState({ mnemonic: '', address: '' });
 
   useEffect(() => {
     if (walletState.mnemonic) {
-      setWalletTab(3);
+      getUserBalance(walletState.mnemonic)
+        .then((balance) => {
+          setWalletTab(3);
+          setBalance(balance);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     }
   }, [walletModalState]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -229,7 +237,7 @@ const WalletModal = () => {
               <InputWrap>
                 <Label>FCT Balance</Label>
                 <Input>
-                  <TextBox>{0}</TextBox>
+                  <TextBox>{balance}</TextBox>
                 </Input>
               </InputWrap>
               <ButtonWrap>

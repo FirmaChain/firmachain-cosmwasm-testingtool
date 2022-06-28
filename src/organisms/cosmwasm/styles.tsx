@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const CosmWasmContainer = styled.div`
   width: 100%;
   max-width: 900px;
-  height: 565px;
+  min-height: 554px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
@@ -79,7 +79,10 @@ export const LeftContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
+  justify-content: flex-start;
+  align-items: flex-start;
 `;
+
 export const RightContent = styled.div`
   flex-grow: 1;
   width: 100%;
@@ -100,6 +103,14 @@ export const NeedLogin = styled.div`
 export const InputWrap = styled.div`
   color: white;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+export const InputWrapRight = styled.div`
+  color: white;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -109,7 +120,6 @@ export const InputWrap = styled.div`
 export const InputWrapHalf = styled.div`
   color: white;
   width: 50%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -118,7 +128,6 @@ export const InputWrapHalf = styled.div`
 export const InputGroup = styled.div`
   color: white;
   width: 100%;
-  height: 100%;
   display: flex;
   position: relative;
   gap: 30px;
@@ -128,6 +137,8 @@ export const Label = styled.div`
   font-size: 1.8rem;
   margin: 10px 0;
   color: #dddddd;
+  display: flex;
+  gap: 10px;
 `;
 
 export const Input = styled.div``;
@@ -145,4 +156,16 @@ export const GeneralButton = styled.div<{ active: boolean }>`
         background-color: rgba(52, 54, 62, 0.75);`}
   cursor: pointer;
   font-size: 1.4rem;
+`;
+
+export const SmallButton = styled.div`
+  padding: 3px 6px;
+  line-height: 15px;
+  margin-top: -3px;
+  text-align: center;
+  color: white;
+  background-color: #3252d3;
+  cursor: pointer;
+  font-size: 1.22rem;
+  border-radius: 4px;
 `;

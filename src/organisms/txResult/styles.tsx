@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 export const ResultContainer = styled.div`
   width: calc(100% - 40px);
@@ -41,9 +42,27 @@ export const Divider = styled.div`
   background-color: #707070;
 `;
 
+export const PointContent = styled.div`
+  font-size: 1.3rem;
+  line-height: 18px;
+  word-break: break-all;
+  color: #bdbdbd;
+  cursor: pointer;
+  &:hover {
+    color: #fff;
+  }
+`;
+
 export const RawLog = styled.div`
   font-size: 1.3rem;
   line-height: 18px;
   word-break: break-all;
   color: #acacac;
+`;
+
+export const CopyIconImg = styled(FileCopyIcon)`
+  width: 12px !important;
+  height: 12px !important;
+  margin-left: 5px;
+  color: ${({ theme }) => theme.colors.realWhite};
 `;

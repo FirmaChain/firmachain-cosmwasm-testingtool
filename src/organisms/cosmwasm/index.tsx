@@ -21,9 +21,11 @@ import {
   InputGroup,
   InputWrapHalf,
   InputWrap,
+  InputWrapRight,
   Input,
   Label,
   GeneralButton,
+  SmallButton,
 } from './styles';
 
 export interface TransactionResult {
@@ -33,6 +35,10 @@ export interface TransactionResult {
   transactionHash: string;
   gasUsed: number;
   gasWanted: number;
+  pointContent: {
+    name: '';
+    value: '';
+  };
 }
 
 const initializeTransactionResult: TransactionResult = {
@@ -42,6 +48,10 @@ const initializeTransactionResult: TransactionResult = {
   transactionHash: '',
   gasUsed: 0,
   gasWanted: 0,
+  pointContent: {
+    name: '',
+    value: '',
+  },
 };
 
 const CosmWasm = () => {
@@ -245,10 +255,10 @@ const CosmWasm = () => {
             </GeneralButton>
           </LeftContent>
           <RightContent>
-            <InputWrap>
+            <InputWrapRight>
               <Label>Transaction Result</Label>
               <TxResult result={txStoreCodeResult} />
-            </InputWrap>
+            </InputWrapRight>
           </RightContent>
         </TabContent>
         <TabContent>
@@ -288,7 +298,10 @@ const CosmWasm = () => {
               </Input>
             </InputWrap>
             <InputWrap>
-              <Label>Init args (JSON)</Label>
+              <Label>
+                Init args (JSON)
+                <SmallButton>Check JSON</SmallButton>
+              </Label>
               <Input>
                 <InputTextArea
                   placeholder={'Please enter the data valid JSON format'}
@@ -307,10 +320,10 @@ const CosmWasm = () => {
             </GeneralButton>
           </LeftContent>
           <RightContent>
-            <InputWrap>
+            <InputWrapRight>
               <Label>Transaction Result</Label>
               <TxResult result={txInstantiateContractResult} />
-            </InputWrap>
+            </InputWrapRight>
           </RightContent>
         </TabContent>
         <TabContent>
@@ -357,10 +370,10 @@ const CosmWasm = () => {
             </GeneralButton>
           </LeftContent>
           <RightContent>
-            <InputWrap>
+            <InputWrapRight>
               <Label>Transaction Result</Label>
               <TxResult result={txExecuteContractResult} />
-            </InputWrap>
+            </InputWrapRight>
           </RightContent>
         </TabContent>
         <TabContent>
@@ -407,19 +420,19 @@ const CosmWasm = () => {
             </GeneralButton>
           </LeftContent>
           <RightContent>
-            <InputWrap>
+            <InputWrapRight>
               <Label>Transaction Result</Label>
               <TxResult result={txMigrateContractResult} />
-            </InputWrap>
+            </InputWrapRight>
           </RightContent>
         </TabContent>
         <TabContent>
           <LeftContent></LeftContent>
           <RightContent>
-            <InputWrap>
+            <InputWrapRight>
               <Label>Transaction Result</Label>
               <TxResult result={initializeTransactionResult} />
-            </InputWrap>
+            </InputWrapRight>
           </RightContent>
         </TabContent>
       </TabContents>

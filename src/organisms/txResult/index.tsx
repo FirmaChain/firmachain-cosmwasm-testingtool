@@ -1,13 +1,26 @@
 import React from 'react';
+import { useSnackbar } from 'notistack';
+import { copyToClipboard } from '../../utils/common';
 import { TransactionResult } from '../cosmwasm';
 
-import { ResultContainer, StatusTypo, Label, HashLink, Divider, RawLog } from './styles';
+import { ResultContainer, StatusTypo, Label, HashLink, Divider, PointContent, RawLog, CopyIconImg } from './styles';
 
 interface IProps {
   result: TransactionResult;
 }
 
 const TxResult = ({ result }: IProps) => {
+  const { enqueueSnackbar } = useSnackbar();
+
+  const onCopyData = (data: any) => {
+    copyToClipboard(data);
+
+    enqueueSnackbar(`Coppied [${result.pointContent.value}]`, {
+      variant: 'success',
+      autoHideDuration: 1000,
+    });
+  };
+
   return (
     <ResultContainer>
       {result.code !== -1 && (
@@ -20,6 +33,15 @@ const TxResult = ({ result }: IProps) => {
             {result.transactionHash}
           </HashLink>
           <Divider />
+          {result.pointContent.name !== '' && (
+            <>
+              <Label>{result.pointContent.name}</Label>
+              <PointContent onClick={() => onCopyData(result.pointContent.value)}>
+                {result.pointContent.value} <CopyIconImg />
+              </PointContent>
+            </>
+          )}
+
           <Label>rawLog</Label>
           <RawLog>{result.rawLog}</RawLog>
         </>

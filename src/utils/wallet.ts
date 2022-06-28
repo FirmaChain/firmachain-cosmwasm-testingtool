@@ -32,9 +32,7 @@ const useFirma = () => {
     const address = await wallet.getAddress();
     const balance = await firmaSDK.Bank.getBalance(address);
 
-    return {
-      balance,
-    };
+    return FirmaUtil.getFCTStringFromUFCTStr(balance);
   };
 
   const cosmwasmStoreCode = async (
@@ -60,9 +58,21 @@ const useFirma = () => {
     const gas = 3000000;
     const fee = FirmaUtil.getUFCTFromFCT(0.3);
 
-    const result = await firmaSDK.CosmWasm.storeCode(wallet, wasmBinary, accessConfig, { gas, fee });
+    let result = await firmaSDK.CosmWasm.storeCode(wallet, wasmBinary, accessConfig, { gas, fee });
 
-    return result;
+    let pointContent = { name: '', value: '' };
+    if (result.code === 0) {
+      let rawJSONData = JSON.parse(result.rawLog!);
+      pointContent = {
+        name: 'Code ID',
+        value: rawJSONData[0]['events'][1]['attributes'][0]['value'],
+      };
+    }
+
+    return {
+      ...result,
+      pointContent,
+    };
   };
 
   const cosmwasmInstantiateContract = async (
@@ -88,12 +98,24 @@ const useFirma = () => {
       data = jsonStringData;
     }
 
-    const result = await firmaSDK.CosmWasm.instantiateContract(wallet, address, codeId, label, data, funds, {
+    let result = await firmaSDK.CosmWasm.instantiateContract(wallet, address, codeId, label, data, funds, {
       gas: gas,
       fee: fee,
     });
 
-    return result;
+    let pointContent = { name: '', value: '' };
+    if (result.code === 0) {
+      let rawJSONData = JSON.parse(result.rawLog!);
+      pointContent = {
+        name: 'Contract Address',
+        value: rawJSONData[0]['events'][0]['attributes'][0]['value'],
+      };
+    }
+
+    return {
+      ...result,
+      pointContent,
+    };
   };
 
   const cosmwasmExecuteContract = async (
@@ -117,12 +139,17 @@ const useFirma = () => {
       data = jsonStringData;
     }
 
-    const result = await firmaSDK.CosmWasm.executeContract(wallet, contractAddress, data, funds, {
+    let result = await firmaSDK.CosmWasm.executeContract(wallet, contractAddress, data, funds, {
       gas: gas,
       fee: fee,
     });
 
-    return result;
+    let pointContent = { name: '', value: '' };
+
+    return {
+      ...result,
+      pointContent,
+    };
   };
 
   const cosmwasmMigrateContract = async (
@@ -141,12 +168,17 @@ const useFirma = () => {
       data = jsonStringData;
     }
 
-    const result = await firmaSDK.CosmWasm.migrateContract(wallet, contractAddress, codeId, data, {
+    let result = await firmaSDK.CosmWasm.migrateContract(wallet, contractAddress, codeId, data, {
       gas: gas,
       fee: fee,
     });
 
-    return result;
+    let pointContent = { name: '', value: '' };
+
+    return {
+      ...result,
+      pointContent,
+    };
   };
 
   const isValidAddress = (address: string) => {

@@ -63,7 +63,7 @@ const QueueTxModal = () => {
   };
 
   return (
-    <Modal visible={queueTxModalState} closable={true} onClose={closeQueueTxModal} width={QueueTxModalWidth}>
+    <Modal visible={queueTxModalState} closable={false} onClose={closeQueueTxModal} width={QueueTxModalWidth}>
       <ModalContainer>
         <ModalTitle>BROADCASTING TRANSACTION</ModalTitle>
         <ModalContent>
