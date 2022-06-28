@@ -95,7 +95,7 @@ const WalletModal = () => {
   const onCopyData = (data: any) => {
     copyToClipboard(data);
 
-    enqueueSnackbar('Coppied Mnemonic', {
+    enqueueSnackbar('Coppied', {
       variant: 'success',
       autoHideDuration: 1000,
     });
@@ -129,8 +129,15 @@ const WalletModal = () => {
 
   const onConnect = (mnemonic: string, address: string) => {
     walletActions.handleWalletData(address, mnemonic, '');
-
     setWalletTab(3);
+
+    getUserBalance(mnemonic)
+      .then((balance) => {
+        setBalance(balance);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   const onDisconnect = () => {

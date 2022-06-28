@@ -72,6 +72,14 @@ export const TabContent = styled.div`
   align-items: stretch;
 `;
 
+export const TabContentVertical = styled.div`
+  width: 100%;
+  display: none;
+  gap: 30px;
+  align-items: stretch;
+  flex-direction: column;
+`;
+
 export const LeftContent = styled.div`
   flex-grow: 1;
   width: 100%;
@@ -84,6 +92,26 @@ export const LeftContent = styled.div`
 `;
 
 export const RightContent = styled.div`
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+export const TopContent = styled.div`
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
+
+export const BottomContent = styled.div`
   flex-grow: 1;
   width: 100%;
   height: 100%;

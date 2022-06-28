@@ -181,6 +181,85 @@ const useFirma = () => {
     };
   };
 
+  const cosmwasmGetCodeList = async () => {
+    let result = await firmaSDK.CosmWasm.getCodeList();
+
+    return {
+      result,
+    };
+  };
+
+  const cosmwasmGetCodeData = async (codeId: string) => {
+    let result = await firmaSDK.CosmWasm.getCodeData(codeId);
+
+    result.data = 'WASM BINARY DATA ...';
+
+    return {
+      result,
+    };
+  };
+
+  const cosmwasmGetContractListFromCodeId = async (codeId: string) => {
+    let result = await firmaSDK.CosmWasm.getContractListFromCodeId(codeId);
+
+    return {
+      result,
+    };
+  };
+
+  const cosmwasmGetPinnedCodeList = async () => {
+    let result = await firmaSDK.CosmWasm.getPinnedCodeList();
+
+    return {
+      result,
+    };
+  };
+
+  const cosmwasmGetContractInfo = async (contractAddress: string) => {
+    let result = await firmaSDK.CosmWasm.getContractInfo(contractAddress);
+
+    return {
+      result,
+    };
+  };
+
+  const cosmwasmGetContractHistory = async (contractAddress: string) => {
+    let result = await firmaSDK.CosmWasm.getContractHistory(contractAddress);
+
+    return {
+      result,
+    };
+  };
+
+  const cosmwasmGetContractState = async (contractAddress: string) => {
+    let result = await firmaSDK.CosmWasm.getContractState(contractAddress);
+
+    return {
+      result,
+    };
+  };
+
+  const cosmwasmGetContractRawQueryData = async (contractAddress: string, hexString: string) => {
+    let result = await firmaSDK.CosmWasm.getContractRawQueryData(contractAddress, hexString);
+
+    return {
+      result,
+    };
+  };
+
+  const cosmwasmGetContractSmartQueryData = async (contractAddress: string, jsonStringData: string) => {
+    let data = '{}';
+    if (jsonStringData !== '') {
+      data = jsonStringData;
+    }
+
+    let result = await firmaSDK.CosmWasm.getContractSmartQueryData(contractAddress, data);
+
+    return {
+      result,
+    };
+  };
+
   const isValidAddress = (address: string) => {
     return FirmaUtil.isValidAddress(address);
   };
@@ -194,6 +273,15 @@ const useFirma = () => {
     cosmwasmInstantiateContract,
     cosmwasmExecuteContract,
     cosmwasmMigrateContract,
+    cosmwasmGetCodeList,
+    cosmwasmGetCodeData,
+    cosmwasmGetContractListFromCodeId,
+    cosmwasmGetPinnedCodeList,
+    cosmwasmGetContractInfo,
+    cosmwasmGetContractHistory,
+    cosmwasmGetContractState,
+    cosmwasmGetContractRawQueryData,
+    cosmwasmGetContractSmartQueryData,
   };
 };
 

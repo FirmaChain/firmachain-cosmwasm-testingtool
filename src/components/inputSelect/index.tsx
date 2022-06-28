@@ -1,32 +1,27 @@
 import React from 'react';
-import { SelectWrapper, OptionItem } from './styles';
+import { SelectWrapper } from './styles';
 
 interface IProps {
-  optionList: Array<string>;
+  optionList: Array<any>;
   value: number;
   setValue: (value: number) => void;
 }
 
 const InputSelect = ({ optionList, value, setValue }: IProps) => {
+  const onChangeEvent = (e: any) => {
+    setValue(Number(e.target.value));
+  };
   return (
     <SelectWrapper>
-      {optionList.map((name: string, index: number) => {
-        return (
-          <OptionItem onClick={() => setValue(index)} key={index}>
-            <input
-              type='radio'
-              key={index}
-              value={index}
-              name='access'
-              checked={value === index}
-              onChange={(e) => {
-                setValue(Number(e.target.value));
-              }}
-            />
-            {name}
-          </OptionItem>
-        );
-      })}
+      <select value={value} onChange={onChangeEvent}>
+        {optionList.map((option: any, index: number) => {
+          return (
+            <option key={index} value={index}>
+              {option.name}
+            </option>
+          );
+        })}
+      </select>
     </SelectWrapper>
   );
 };

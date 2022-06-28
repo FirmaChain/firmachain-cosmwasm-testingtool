@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
 
 import { rootState } from '../../redux/reducers';
 import { Modal } from '../../components/modal';
@@ -19,7 +18,6 @@ import {
 const JSONModal = () => {
   const JSONModalState = useSelector((state: rootState) => state.modal.json);
   const modalData = useSelector((state: rootState) => state.modal.data);
-  const { enqueueSnackbar } = useSnackbar();
 
   const [JSONString, setJSONString] = useState('');
   const [isValid, setValid] = useState(false);
@@ -35,14 +33,14 @@ const JSONModal = () => {
         setValid(false);
       }
     }
-  }, [JSONModalState]);
+  }, [JSONModalState]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const closeJSONModal = () => {
     modalActions.handleModalJSON(false);
   };
 
   return (
-    <Modal visible={JSONModalState} closable={true} onClose={closeJSONModal} width={JSONModalWidth}>
+    <Modal visible={JSONModalState} maskClosable={true} closable={true} onClose={closeJSONModal} width={JSONModalWidth}>
       <ModalContainer>
         <ModalTitle>JSON DATA</ModalTitle>
         <ModalContent>
