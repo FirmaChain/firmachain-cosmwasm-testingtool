@@ -8,7 +8,7 @@ FirmaChain CosmWasm Testing Tool is a web service to test smartcontract based ru
 (Coming soon)
 Website : https://contract-testnet.firmachain.dev/
 
-# How to bulid
+# How to build
 
 ### 1. Install and Run 
 ```javascript
