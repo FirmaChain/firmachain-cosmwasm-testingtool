@@ -44,7 +44,7 @@ const WalletModal = () => {
   const [walletData, setWalletData] = useState({ mnemonic: '', address: '' });
 
   useEffect(() => {
-    if (walletState.mnemonic) {
+    if (walletModalState && walletState.mnemonic) {
       getUserBalance(walletState.mnemonic)
         .then((balance) => {
           setWalletTab(3);

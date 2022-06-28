@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
 import { rootState } from '../../redux/reducers';
-import { WalletModal, QueueTxModal } from '../modal';
+import { WalletModal, QueueTxModal, JSONModal } from '../modal';
 import { modalActions } from '../../redux/action';
 import { copyToClipboard } from '../../utils/common';
 
@@ -30,7 +30,7 @@ import {
 } from './styles';
 
 const Header = () => {
-  const { wallet, queueTx } = useSelector((state: rootState) => state.modal);
+  const { wallet, queueTx, json } = useSelector((state: rootState) => state.modal);
   const walletState = useSelector((state: rootState) => state.wallet);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -85,6 +85,7 @@ const Header = () => {
 
       {wallet && <WalletModal />}
       {queueTx && <QueueTxModal />}
+      {json && <JSONModal />}
     </HeaderContainer>
   );
 };

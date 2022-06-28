@@ -205,6 +205,11 @@ const CosmWasm = () => {
     }
   };
 
+  const onClickJSONModal = (jsonData: string) => {
+    modalActions.handleModalData({ jsonData });
+    modalActions.handleModalJSON(true);
+  };
+
   return (
     <CosmWasmContainer>
       <TabMenuList currentTab={currentTab}>
@@ -300,7 +305,7 @@ const CosmWasm = () => {
             <InputWrap>
               <Label>
                 Init args (JSON)
-                <SmallButton>Check JSON</SmallButton>
+                <SmallButton onClick={() => onClickJSONModal(instantiateArgs)}>Check JSON</SmallButton>
               </Label>
               <Input>
                 <InputTextArea
@@ -351,7 +356,10 @@ const CosmWasm = () => {
               </Input>
             </InputWrap>
             <InputWrap>
-              <Label>Send args (JSON)</Label>
+              <Label>
+                Send args (JSON)
+                <SmallButton onClick={() => onClickJSONModal(executeArgs)}>Check JSON</SmallButton>
+              </Label>
               <Input>
                 <InputTextArea
                   placeholder={'Please enter the data valid JSON format'}
@@ -401,7 +409,10 @@ const CosmWasm = () => {
               </Input>
             </InputWrap>
             <InputWrap>
-              <Label>Migrate args (JSON)</Label>
+              <Label>
+                Migrate args (JSON)
+                <SmallButton onClick={() => onClickJSONModal(migrateArgs)}>Check JSON</SmallButton>
+              </Label>
               <Input>
                 <InputTextArea
                   placeholder={'Please enter the data valid JSON format'}

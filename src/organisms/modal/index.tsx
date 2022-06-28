@@ -1,3 +1,5 @@
 import WalletModal from './walletModal';
 import QueueTxModal from './queueTxModal';
-export { WalletModal, QueueTxModal };
+import JSONModal from './JSONModal';
+
+export { WalletModal, QueueTxModal, JSONModal };

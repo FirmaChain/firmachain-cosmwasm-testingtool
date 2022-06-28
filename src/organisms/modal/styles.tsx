@@ -6,6 +6,7 @@ export { NewWalletIcon, RecoverMnemonicIcon, FileCopyIcon };
 
 export const WalletModalWidth = '500px';
 export const QueueTxModalWidth = '500px';
+export const JSONModalWidth = '900px';
 
 const fadeIn = keyframes`
   0% {
@@ -255,4 +256,14 @@ export const DisableButton = styled.div`
   border-radius: 4px;
   cursor: pointer;
   font-size: 1.4rem;
+`;
+
+export const JSONWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 22px;
+  background-color: rgba(52, 54, 62, 0.75);
+  color: #ddd;
+  padding: 30px;
 `;
