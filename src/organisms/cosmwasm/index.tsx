@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { rootState } from '../../redux/reducers';
+import { modalActions } from '../../redux/action';
+import useFirma from '../../utils/wallet';
+
 import InputFile from '../../components/inputFile';
 import InputSelect from '../../components/inputSelect';
 import InputText from '../../components/inputText';
@@ -13,17 +18,48 @@ import {
   TabContent,
   LeftContent,
   RightContent,
+  InputGroup,
+  InputWrapHalf,
   InputWrap,
   Input,
   Label,
   GeneralButton,
 } from './styles';
 
+export interface TransactionResult {
+  code: number;
+  height: number;
+  rawLog: string;
+  transactionHash: string;
+  gasUsed: number;
+  gasWanted: number;
+}
+
+const initializeTransactionResult: TransactionResult = {
+  code: -1,
+  height: 0,
+  rawLog: '',
+  transactionHash: '',
+  gasUsed: 0,
+  gasWanted: 0,
+};
+
 const CosmWasm = () => {
+  const {
+    isValidAddress,
+    cosmwasmStoreCode,
+    cosmwasmInstantiateContract,
+    cosmwasmExecuteContract,
+    cosmwasmMigrateContract,
+  } = useFirma();
+  const walletState = useSelector((state: rootState) => state.wallet);
+
   const [currentTab, setTab] = useState(0);
+  const [storeWasmBinary, setStoreWasmBinary] = useState<Uint8Array>(new Uint8Array());
   const [storeAccessConfig, setStoreAccessConfig] = useState(0);
   const [storeAddress, setStoreAddress] = useState('');
   const [instantiateCodeId, setInstantiateCodeId] = useState('');
+  const [instantiateFunds, setInstantiaFunds] = useState('');
   const [instantiateLabel, setInstantiateLabel] = useState('');
   const [instantiateArgs, setInstantiateArgs] = useState('');
   const [executeContractAddress, setExecuteContractAddress] = useState('');
@@ -33,9 +69,101 @@ const CosmWasm = () => {
   const [migrateCodeId, setMigrateCodeId] = useState('');
   const [migrateArgs, setMigrateArgs] = useState('');
 
-  const tabList = ['Store', 'Instantiate', 'Excute', 'Migrate', 'Query'];
+  const [isActiveStoreCode, setActiveStoreCode] = useState(false);
+  const [isActiveInstantiateContract, setActiveInstantiateContract] = useState(false);
+  const [isActiveExecuteContract, setActiveExecuteContract] = useState(false);
+  const [isActiveMigrateContract, setActiveMigrateContract] = useState(false);
+  // const [isActiveQuery, setActiveQuery] = useState(false);
+
+  const [txStoreCodeResult, setTxStoreCodeResult] = useState<TransactionResult>(initializeTransactionResult);
+  const [txInstantiateContractResult, setTxInstantiateContractResult] =
+    useState<TransactionResult>(initializeTransactionResult);
+  const [txExecuteContractResult, setTxExecuteContractResult] =
+    useState<TransactionResult>(initializeTransactionResult);
+  const [txMigrateContractResult, setTxMigrateContractResult] =
+    useState<TransactionResult>(initializeTransactionResult);
+
+  useEffect(() => {
+    setActiveStoreCode(
+      walletState.mnemonic !== '' &&
+        storeWasmBinary.length > 0 &&
+        (storeAccessConfig === 1 ? isValidAddress(storeAddress) : true)
+    );
+  }, [storeWasmBinary, storeAccessConfig, storeAddress]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    setActiveInstantiateContract(walletState.mnemonic !== '' && instantiateCodeId !== '' && instantiateLabel !== '');
+  }, [instantiateCodeId, instantiateFunds, instantiateLabel, instantiateArgs]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    setActiveExecuteContract(walletState.mnemonic !== '' && executeContractAddress !== '');
+  }, [executeContractAddress, executeFunds, executeArgs]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    setActiveMigrateContract(walletState.mnemonic !== '' && migrateCodeId !== '' && migrateContractAddress !== '');
+  }, [migrateContractAddress, migrateCodeId, migrateArgs]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const successTx = (result: any, resolveTx: () => void, setTxResult: (txResult: TransactionResult) => void) => {
+    if (result.code === 0) {
+      setTxResult(result);
+      resolveTx();
+    } else {
+      throw result;
+    }
+  };
+
+  const failedTx = (e: any, rejectTx: () => void, setTxResult: (txResult: TransactionResult) => void) => {
+    console.log(e);
+
+    if (e.code) {
+      setTxResult(e);
+    }
+    rejectTx();
+  };
+
+  const txStoreCode = (resolveTx: () => void, rejectTx: () => void) => {
+    cosmwasmStoreCode(walletState.mnemonic, storeWasmBinary, storeAccessConfig, storeAddress)
+      .then((result: any) => successTx(result, resolveTx, setTxStoreCodeResult))
+      .catch((e) => failedTx(e, rejectTx, setTxStoreCodeResult));
+  };
+
+  const txInstantiateContract = (resolveTx: () => void, rejectTx: () => void) => {
+    console.log(instantiateArgs);
+    console.log(JSON.stringify(instantiateArgs));
+
+    cosmwasmInstantiateContract(
+      walletState.mnemonic,
+      instantiateCodeId,
+      instantiateFunds,
+      instantiateLabel,
+      instantiateArgs
+    )
+      .then((result: any) => successTx(result, resolveTx, setTxInstantiateContractResult))
+      .catch((e) => failedTx(e, rejectTx, setTxInstantiateContractResult));
+  };
+
+  const txExecuteContract = (resolveTx: () => void, rejectTx: () => void) => {
+    cosmwasmExecuteContract(walletState.mnemonic, executeContractAddress, executeFunds, executeArgs)
+      .then((result: any) => successTx(result, resolveTx, setTxExecuteContractResult))
+      .catch((e) => failedTx(e, rejectTx, setTxExecuteContractResult));
+  };
+
+  const txMigrateContract = (resolveTx: () => void, rejectTx: () => void) => {
+    cosmwasmMigrateContract(walletState.mnemonic, migrateContractAddress, migrateCodeId, migrateArgs)
+      .then((result: any) => successTx(result, resolveTx, setTxMigrateContractResult))
+      .catch((e) => failedTx(e, rejectTx, setTxMigrateContractResult));
+  };
+
+  const tabList = [
+    { name: 'Store', action: txStoreCode },
+    { name: 'Instantiate', action: txInstantiateContract },
+    { name: 'Execute', action: txExecuteContract },
+    { name: 'Migrate', action: txMigrateContract },
+    { name: 'Query', action: () => {} },
+  ];
 
   const resetTab = () => {
+    setStoreWasmBinary(new Uint8Array());
     setStoreAccessConfig(0);
     setStoreAddress('');
     setInstantiateCodeId('');
@@ -47,6 +175,10 @@ const CosmWasm = () => {
     setMigrateContractAddress('');
     setMigrateCodeId('');
     setMigrateArgs('');
+    setTxStoreCodeResult(initializeTransactionResult);
+    setTxInstantiateContractResult(initializeTransactionResult);
+    setTxExecuteContractResult(initializeTransactionResult);
+    setTxMigrateContractResult(initializeTransactionResult);
   };
 
   const changeTab = (tabIndex: number) => {
@@ -54,12 +186,21 @@ const CosmWasm = () => {
     setTab(tabIndex);
   };
 
+  const onClickButtonInTab = (tabIndex: number, isActive: boolean) => {
+    if (isActive) {
+      modalActions.handleModalData({
+        txAction: tabList[tabIndex].action,
+      });
+      modalActions.handleModalQueueTx(true);
+    }
+  };
+
   return (
     <CosmWasmContainer>
       <TabMenuList currentTab={currentTab}>
-        {tabList.map((tabName: string, index: number) => (
+        {tabList.map((tab: any, index: number) => (
           <TabMenu onClick={() => changeTab(index)} key={index}>
-            <TabText>{tabName}</TabText>
+            <TabText>{tab.name}</TabText>
           </TabMenu>
         ))}
       </TabMenuList>
@@ -69,7 +210,7 @@ const CosmWasm = () => {
             <InputWrap>
               <Label>Wasm binary file</Label>
               <Input>
-                <InputFile />
+                <InputFile value={storeWasmBinary} setValue={setStoreWasmBinary} />
               </Input>
             </InputWrap>
             <InputWrap>
@@ -94,29 +235,48 @@ const CosmWasm = () => {
                 />
               </Input>
             </InputWrap>
-            <GeneralButton>Store Code</GeneralButton>
+            <GeneralButton
+              active={isActiveStoreCode}
+              onClick={() => {
+                onClickButtonInTab(0, isActiveStoreCode);
+              }}
+            >
+              Store Code
+            </GeneralButton>
           </LeftContent>
           <RightContent>
             <InputWrap>
               <Label>Transaction Result</Label>
-              <TxResult />
+              <TxResult result={txStoreCodeResult} />
             </InputWrap>
           </RightContent>
         </TabContent>
         <TabContent>
           <LeftContent>
-            <InputWrap>
-              <Label>Code ID</Label>
-              <Input>
-                <InputText
-                  placeholder={'Please enter the Code number.'}
-                  regExp={/^[0-9]*$/}
-                  value={instantiateCodeId}
-                  setValue={setInstantiateCodeId}
-                />
-              </Input>
-            </InputWrap>
-
+            <InputGroup>
+              <InputWrapHalf>
+                <Label>Code ID</Label>
+                <Input>
+                  <InputText
+                    placeholder={'Please enter the Code number.'}
+                    regExp={/^[0-9]*$/}
+                    value={instantiateCodeId}
+                    setValue={setInstantiateCodeId}
+                  />
+                </Input>
+              </InputWrapHalf>
+              <InputWrapHalf>
+                <Label>FCT Amount (Funds)</Label>
+                <Input>
+                  <InputText
+                    placeholder={'Please enter the fct amount'}
+                    regExp={/^[0-9.]*$/}
+                    value={instantiateFunds}
+                    setValue={setInstantiaFunds}
+                  />
+                </Input>
+              </InputWrapHalf>
+            </InputGroup>
             <InputWrap>
               <Label>Label</Label>
               <Input>
@@ -137,12 +297,19 @@ const CosmWasm = () => {
                 />
               </Input>
             </InputWrap>
-            <GeneralButton>Instantiate Code</GeneralButton>
+            <GeneralButton
+              active={isActiveInstantiateContract}
+              onClick={() => {
+                onClickButtonInTab(1, isActiveInstantiateContract);
+              }}
+            >
+              Instantiate Contract
+            </GeneralButton>
           </LeftContent>
           <RightContent>
             <InputWrap>
               <Label>Transaction Result</Label>
-              <TxResult />
+              <TxResult result={txInstantiateContractResult} />
             </InputWrap>
           </RightContent>
         </TabContent>
@@ -180,12 +347,19 @@ const CosmWasm = () => {
                 />
               </Input>
             </InputWrap>
-            <GeneralButton>Execute Code</GeneralButton>
+            <GeneralButton
+              active={isActiveExecuteContract}
+              onClick={() => {
+                onClickButtonInTab(2, isActiveExecuteContract);
+              }}
+            >
+              Execute Contract
+            </GeneralButton>
           </LeftContent>
           <RightContent>
             <InputWrap>
               <Label>Transaction Result</Label>
-              <TxResult />
+              <TxResult result={txExecuteContractResult} />
             </InputWrap>
           </RightContent>
         </TabContent>
@@ -223,12 +397,19 @@ const CosmWasm = () => {
                 />
               </Input>
             </InputWrap>
-            <GeneralButton>Migrate Code</GeneralButton>
+            <GeneralButton
+              active={isActiveMigrateContract}
+              onClick={() => {
+                onClickButtonInTab(3, isActiveMigrateContract);
+              }}
+            >
+              Migrate Contract
+            </GeneralButton>
           </LeftContent>
           <RightContent>
             <InputWrap>
               <Label>Transaction Result</Label>
-              <TxResult />
+              <TxResult result={txMigrateContractResult} />
             </InputWrap>
           </RightContent>
         </TabContent>
@@ -237,7 +418,7 @@ const CosmWasm = () => {
           <RightContent>
             <InputWrap>
               <Label>Transaction Result</Label>
-              <TxResult />
+              <TxResult result={initializeTransactionResult} />
             </InputWrap>
           </RightContent>
         </TabContent>

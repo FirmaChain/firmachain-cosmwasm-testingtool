@@ -1,8 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { rootState } from '../../redux/reducers';
-import { WalletModal } from '../modal';
+import { WalletModal, QueueTxModal } from '../modal';
 import { modalActions } from '../../redux/action';
+
+import { FIRMACHAIN_CONFIG } from '../../config';
 
 import {
   HeaderTopWrapper,
@@ -25,7 +27,7 @@ import {
 } from './styles';
 
 const Header = () => {
-  const { wallet } = useSelector((state: rootState) => state.modal);
+  const { wallet, queueTx } = useSelector((state: rootState) => state.modal);
   const walletState = useSelector((state: rootState) => state.wallet);
 
   const onWallet = () => {
@@ -39,7 +41,7 @@ const Header = () => {
           {walletState && walletState.mnemonic && <AddressTypo>{walletState.address}</AddressTypo>}
           <NetworkWrapper>
             <NetworkDot />
-            <NetworkTypo>Imperium-3</NetworkTypo>
+            <NetworkTypo>{FIRMACHAIN_CONFIG.chainID}</NetworkTypo>
           </NetworkWrapper>
         </HeaderInner>
       </HeaderTopWrapper>
@@ -67,6 +69,7 @@ const Header = () => {
       </HeaderWrapper>
 
       {wallet && <WalletModal />}
+      {queueTx && <QueueTxModal />}
     </HeaderContainer>
   );
 };

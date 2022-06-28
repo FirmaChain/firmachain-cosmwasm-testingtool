@@ -1,10 +1,27 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import NewWalletIcon from '@mui/icons-material/AddBox';
 import RecoverMnemonicIcon from '@mui/icons-material/Restore';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 export { NewWalletIcon, RecoverMnemonicIcon, FileCopyIcon };
 
 export const WalletModalWidth = '500px';
+export const QueueTxModalWidth = '500px';
+
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+export const ModalContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px 0;
+`;
 
 export const ModalTitle = styled.div`
   width: 100%;
@@ -24,6 +41,13 @@ export const SubTitle = styled.div`
   font-size: 1.2rem;
 `;
 
+export const ModalContent = styled.div`
+  width: calc(100% - 60px);
+  height: 100%;
+  padding: 0 30px;
+  font-size: 1.6rem;
+`;
+
 export const ModalContents = styled.div`
   display: flex;
   align-items: center;
@@ -32,6 +56,58 @@ export const ModalContents = styled.div`
   -moz-user-select: none;
   -khtml-user-select: none;
   -ms-user-select: none;
+`;
+
+export const LoadingWrapper = styled.div`
+  width: 100%;
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+`;
+
+export const QueueTypoWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 17px;
+`;
+
+export const QueueTypoOne = styled.div`
+  text-align: center;
+  line-height: 20px;
+  font-size: 1.4rem;
+  color: #999;
+`;
+
+export const AfterTypo = styled.div<{ isActive: boolean }>`
+  display: ${(props) => (props.isActive ? 'flex' : 'none')};
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-name: ${fadeIn};
+  animation-fill-mode: forwards;
+`;
+
+export const QueueIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  flex: 1 1 25px;
+  margin-right: 7px;
+  background: url('${({ theme }) => theme.urls.tooltip}');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+`;
+
+export const QueueTypoTwo = styled.div`
+  text-align: center;
+  line-height: 20px;
+  font-size: 1.4rem;
+  color: #ffc542;
 `;
 
 export const MenuListWrap = styled.div`

@@ -19,6 +19,40 @@ export const UploadTypo = styled.div`
   font-size: 1.6rem;
   color: #939393;
 `;
+
+export const FileNameTypo = styled.div`
+  font-size: 1.6rem;
+  color: white;
+`;
+
+export const RetryButton = styled.div`
+  color: #efefef;
+  font-size: 1.3rem;
+  text-align: center;
+  opacity: 0.8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+export const RetryIcon = styled.div`
+  width: 15px;
+  height: 15px;
+  background-image: url('${({ theme }) => theme.urls.retry}');
+  background-size: contain;
+  background-repeat: no-repeat;
+  color: white;
+`;
+
+export const RetryTypo = styled.div`
+  font-size: 1.3rem;
+  color: #939393;
+`;
+
 export const UploadButton = styled.div`
   width: 150px;
   height: 28px;

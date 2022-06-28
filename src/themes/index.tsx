@@ -14,6 +14,8 @@ const urls = {
   login: process.env.PUBLIC_URL + '/images/ic_login_wh_24px.svg',
   setting: process.env.PUBLIC_URL + '/images/ic_setting_24px.svg',
   open: process.env.PUBLIC_URL + '/images/ic_openinnew_wh_24px.svg',
+  retry: process.env.PUBLIC_URL + '/images/ic_retry_16px.svg',
+  tooltip: process.env.PUBLIC_URL + '/images/ic_tooltip.png',
 };
 
 const theme = {

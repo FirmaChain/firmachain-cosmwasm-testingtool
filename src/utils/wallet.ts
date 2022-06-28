@@ -1,4 +1,6 @@
-import { FirmaSDK } from '@firmachain/firma-js';
+import { FirmaSDK, FirmaUtil } from '@firmachain/firma-js';
+import { AccessConfig, AccessType } from 'cosmjs-types/cosmwasm/wasm/v1/types';
+
 import { FIRMACHAIN_CONFIG } from '../config';
 
 const useFirma = () => {
@@ -35,10 +37,131 @@ const useFirma = () => {
     };
   };
 
+  const cosmwasmStoreCode = async (
+    mnemonic: string,
+    wasmBinary: Uint8Array,
+    accessConfigType: number,
+    accessAddress: string
+  ) => {
+    const wallet = await firmaSDK.Wallet.fromMnemonic(mnemonic);
+
+    let accessConfig: AccessConfig = { permission: AccessType.UNRECOGNIZED, address: '' };
+    if (accessConfigType === 0) {
+      accessConfig.permission = AccessType.ACCESS_TYPE_EVERYBODY;
+      accessConfig.address = '';
+    } else if (accessConfigType === 1) {
+      accessConfig.permission = AccessType.ACCESS_TYPE_ONLY_ADDRESS;
+      accessConfig.address = accessAddress;
+    } else {
+      accessConfig.permission = AccessType.ACCESS_TYPE_EVERYBODY;
+      accessConfig.address = '';
+    }
+
+    const gas = 3000000;
+    const fee = FirmaUtil.getUFCTFromFCT(0.3);
+
+    const result = await firmaSDK.CosmWasm.storeCode(wallet, wasmBinary, accessConfig, { gas, fee });
+
+    return result;
+  };
+
+  const cosmwasmInstantiateContract = async (
+    mnemonic: string,
+    codeId: string,
+    fundFCT: string,
+    label: string,
+    jsonStringData: string
+  ) => {
+    const wallet = await firmaSDK.Wallet.fromMnemonic(mnemonic);
+    const address = await wallet.getAddress();
+
+    const gas = 3000000;
+    const fee = FirmaUtil.getUFCTFromFCT(0.3);
+
+    let funds: any = [];
+    if (fundFCT !== '') {
+      funds = [{ denom: 'ufct', amount: FirmaUtil.getUFCTStringFromFCTStr(fundFCT) }];
+    }
+
+    let data = '{}';
+    if (jsonStringData !== '') {
+      data = jsonStringData;
+    }
+
+    const result = await firmaSDK.CosmWasm.instantiateContract(wallet, address, codeId, label, data, funds, {
+      gas: gas,
+      fee: fee,
+    });
+
+    return result;
+  };
+
+  const cosmwasmExecuteContract = async (
+    mnemonic: string,
+    contractAddress: string,
+    fundFCT: string,
+    jsonStringData: string
+  ) => {
+    const wallet = await firmaSDK.Wallet.fromMnemonic(mnemonic);
+
+    const gas = 3000000;
+    const fee = FirmaUtil.getUFCTFromFCT(0.3);
+
+    let funds: any = [];
+    if (fundFCT !== '') {
+      funds = [{ denom: 'ufct', amount: FirmaUtil.getUFCTStringFromFCTStr(fundFCT) }];
+    }
+
+    let data = '{}';
+    if (jsonStringData !== '') {
+      data = jsonStringData;
+    }
+
+    const result = await firmaSDK.CosmWasm.executeContract(wallet, contractAddress, data, funds, {
+      gas: gas,
+      fee: fee,
+    });
+
+    return result;
+  };
+
+  const cosmwasmMigrateContract = async (
+    mnemonic: string,
+    contractAddress: string,
+    codeId: string,
+    jsonStringData: string
+  ) => {
+    const wallet = await firmaSDK.Wallet.fromMnemonic(mnemonic);
+
+    const gas = 3000000;
+    const fee = FirmaUtil.getUFCTFromFCT(0.3);
+
+    let data = '{}';
+    if (jsonStringData !== '') {
+      data = jsonStringData;
+    }
+
+    const result = await firmaSDK.CosmWasm.migrateContract(wallet, contractAddress, codeId, data, {
+      gas: gas,
+      fee: fee,
+    });
+
+    return result;
+  };
+
+  const isValidAddress = (address: string) => {
+    return FirmaUtil.isValidAddress(address);
+  };
+
   return {
     getNewWallet,
     getRecoverWallet,
     getUserBalance,
+    isValidAddress,
+    cosmwasmStoreCode,
+    cosmwasmInstantiateContract,
+    cosmwasmExecuteContract,
+    cosmwasmMigrateContract,
   };
 };
 

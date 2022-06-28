@@ -61,7 +61,7 @@ export const PrevButton = styled.div`
 export const CloseButton = styled.div`
   position: absolute;
   width: 17px;
-  height: 18px;
+  height: 17px;
   top: 0px;
   right: 0px;
   display: inline-block;

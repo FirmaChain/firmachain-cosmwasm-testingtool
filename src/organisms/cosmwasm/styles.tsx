@@ -105,21 +105,44 @@ export const InputWrap = styled.div`
   flex-direction: column;
   position: relative;
 `;
+
+export const InputWrapHalf = styled.div`
+  color: white;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+export const InputGroup = styled.div`
+  color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  gap: 30px;
+`;
+
 export const Label = styled.div`
   font-size: 1.8rem;
   margin: 10px 0;
   color: #dddddd;
 `;
+
 export const Input = styled.div``;
 
-export const GeneralButton = styled.div`
+export const GeneralButton = styled.div<{ active: boolean }>`
   width: 100%;
   height: 54px;
   line-height: 54px;
   text-align: center;
-  color: white;
-  background-color: rgba(52, 54, 62, 0.75);
+  ${(props) =>
+    props.active
+      ? `color: white;
+        background-color:  #3252d3;`
+      : `color: #8d8d8d;
+        background-color: rgba(52, 54, 62, 0.75);`}
   cursor: pointer;
   font-size: 1.4rem;
-  color: #8d8d8d;
 `;

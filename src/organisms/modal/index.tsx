@@ -1,3 +1,3 @@
 import WalletModal from './walletModal';
-
-export { WalletModal };
+import QueueTxModal from './queueTxModal';
+export { WalletModal, QueueTxModal };
