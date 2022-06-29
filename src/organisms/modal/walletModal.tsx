@@ -248,7 +248,7 @@ const WalletModal = () => {
                 </Input>
               </InputWrap>
               <ButtonWrap>
-                <GeneralButton onClick={() => {}}>Faucet</GeneralButton>
+                <GeneralButton onClick={() => window.open(process.env.REACT_APP_FAUCET)}>Faucet</GeneralButton>
                 <DisableButton onClick={() => onDisconnect()}>Disconnect</DisableButton>
               </ButtonWrap>
             </NewWalletWrap>

@@ -79,7 +79,7 @@ const CosmWasm = () => {
 
   const walletState = useSelector((state: rootState) => state.wallet);
 
-  const [currentTab, setTab] = useState(4);
+  const [currentTab, setTab] = useState(0);
   const [storeWasmBinary, setStoreWasmBinary] = useState<Uint8Array>(new Uint8Array());
   const [storeAccessConfig, setStoreAccessConfig] = useState(0);
   const [storeAddress, setStoreAddress] = useState('');
