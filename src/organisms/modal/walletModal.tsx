@@ -45,9 +45,10 @@ const WalletModal = () => {
 
   useEffect(() => {
     if (walletModalState && walletState.mnemonic) {
+      setWalletTab(3);
+
       getUserBalance(walletState.mnemonic)
         .then((balance) => {
-          setWalletTab(3);
           setBalance(balance);
         })
         .catch((e) => {
