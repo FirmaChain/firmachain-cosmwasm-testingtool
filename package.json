@@ -1,6 +1,6 @@
 {
   "name": "firmachain-contract",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "homepage": "./",
   "resolutions": {
@@ -61,7 +61,7 @@
   },
   "scripts": {
     "start": "react-app-env --env-file=.env start",
-    "build": "cross-env GENERATE_SOURCEMAP=false react-scripts build"
+    "build": "cross-env GENERATE_SOURCEMAP=false react-app-env --env-file=.env build"
   },
   "eslintConfig": {
     "extends": [
