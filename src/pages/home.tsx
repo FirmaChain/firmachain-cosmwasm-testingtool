@@ -1,4 +1,5 @@
 import React from 'react';
+import Sidebar from '../organisms/sidebar';
 import CosmWasm from '../organisms/cosmwasm';
 import Header from '../organisms/header';
 import Footer from '../organisms/footer';
@@ -16,6 +17,7 @@ import {
 const Home = () => {
   return (
     <ContentContainer>
+      <Sidebar />
       <Header />
       <BackgroundBlur />
       <BackgroundBox>

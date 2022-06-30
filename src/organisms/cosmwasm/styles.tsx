@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const CosmWasmContainer = styled.div`
   width: 100%;
   max-width: 900px;
-  min-height: 554px;
+  min-height: 536px;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
@@ -86,7 +86,7 @@ export const LeftContent = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 24px;
   justify-content: flex-start;
   align-items: flex-start;
 `;
@@ -184,6 +184,7 @@ export const GeneralButton = styled.div<{ active: boolean }>`
         background-color: rgba(52, 54, 62, 0.75);`}
   cursor: pointer;
   font-size: 1.4rem;
+  border-radius: 8px;
 `;
 
 export const SmallButton = styled.div`
