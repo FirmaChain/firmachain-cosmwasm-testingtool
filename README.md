@@ -2,10 +2,9 @@
 
 FirmaChain CosmWasm Testing Tool is a web service to test smartcontract based rust-language on cosmwasm in testnet.
 
-![image](https://user-images.githubusercontent.com/5277080/174782467-d373ce6d-51d2-4aef-9e5b-044dd97a8149.png)
+![1](https://user-images.githubusercontent.com/89889026/177128840-f2e251a1-0436-4876-974a-5f5bc69a72ad.png)
 
 
-(Coming soon)
 Website : https://contract-testnet.firmachain.dev/
 
 # How to build
@@ -13,6 +12,10 @@ Website : https://contract-testnet.firmachain.dev/
 ### 1. Install and Run 
 ```javascript
 npm install
+
+cp .env.sample .env
+cp src/config.sample.ts src/config.ts
+
 npm run start
 ```
 </br>
