@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Drawer } from '@mui/material';
 import { modalActions } from '../../redux/action';
 import useFirma from '../../utils/wallet';
+import { useSnackbar } from 'notistack';
 
 import InputSelect from '../../components/inputSelect';
 import InputText from '../../components/inputText';
@@ -32,6 +33,8 @@ const CosmWasm = () => {
     cosmwasmGetContractRawQueryData,
     cosmwasmGetContractSmartQueryData,
   } = useFirma();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const [queryType, setQueryType] = useState(0);
   const [queryCodeId, setQueryCodeId] = useState('');
@@ -91,7 +94,11 @@ const CosmWasm = () => {
   };
 
   const failedQuery = (e: any) => {
-    console.log(e);
+    enqueueSnackbar(e, {
+      variant: 'error',
+      autoHideDuration: 3000,
+    });
+    setQueryResult({});
   };
 
   const queryGetCodeList = () => {
