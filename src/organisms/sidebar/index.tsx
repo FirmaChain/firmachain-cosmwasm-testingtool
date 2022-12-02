@@ -94,7 +94,7 @@ const CosmWasm = () => {
   };
 
   const failedQuery = (e: any) => {
-    enqueueSnackbar(e, {
+    enqueueSnackbar(e.message, {
       variant: 'error',
       autoHideDuration: 3000,
     });
