@@ -49,7 +49,7 @@ const CosmWasm = () => {
   useEffect(() => {
     setQueryCodeId('');
     setQueryContractAddress('');
-    setQueryResult({});
+    setQueryResult(null);
   }, [queryType]);
 
   const isActiveQuery = () => {
@@ -98,7 +98,7 @@ const CosmWasm = () => {
       variant: 'error',
       autoHideDuration: 3000,
     });
-    setQueryResult({});
+    setQueryResult('ERROR');
   };
 
   const queryGetCodeList = () => {
