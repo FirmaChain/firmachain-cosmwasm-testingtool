@@ -62,10 +62,12 @@ const useFirma = () => {
 
     let pointContent = { name: '', value: '' };
     if (result.code === 0) {
-      let rawJSONData = JSON.parse(result.rawLog!);
+      const rawJSONData = JSON.parse(result.rawLog!);
+      const codeId = rawJSONData[0]['events'][1]['attributes'].filter((v: any) => v.key === 'code_id');
+
       pointContent = {
         name: 'Code ID',
-        value: rawJSONData[0]['events'][1]['attributes'][0]['value'],
+        value: codeId[0]['value'],
       };
     }
 
