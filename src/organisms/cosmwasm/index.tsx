@@ -85,7 +85,10 @@ const CosmWasm = () => {
   const [isActiveExecuteContract, setActiveExecuteContract] = useState(false);
   const [isActiveMigrateContract, setActiveMigrateContract] = useState(false);
 
-  const [txResult, setTxResult] = useState<TransactionResult>(initializeTransactionResult);
+  const [txStoreResult, setTxStoreResult] = useState<TransactionResult>(initializeTransactionResult);
+  const [txInstantiateResult, setTxInstantiateResult] = useState<TransactionResult>(initializeTransactionResult);
+  const [txExecuteResult, setTxExecuteResult] = useState<TransactionResult>(initializeTransactionResult);
+  const [txMigrateResult, setTxMigrateResult] = useState<TransactionResult>(initializeTransactionResult);
 
   useEffect(() => {
     setActiveStoreCode(
@@ -107,28 +110,54 @@ const CosmWasm = () => {
     setActiveMigrateContract(walletState.mnemonic !== '' && migrateCodeId !== '' && migrateContractAddress !== '');
   }, [migrateContractAddress, migrateCodeId, migrateArgs]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const successTx = (result: any, resolveTx: () => void) => {
+  const successTx = (result: any, txType: string, resolveTx: () => void) => {
     if (result.code === 0) {
-      setTxResult(result);
+      switch (txType) {
+        case 'store':
+          setTxStoreResult(result);
+          break;
+        case 'instantiate':
+          setTxInstantiateResult(result);
+          break;
+        case 'execute':
+          setTxExecuteResult(result);
+          break;
+        case 'migrate':
+          setTxMigrateResult(result);
+          break;
+      }
       resolveTx();
     } else {
       throw result;
     }
   };
 
-  const failedTx = (e: any, rejectTx: () => void) => {
+  const failedTx = (e: any, txType: string, rejectTx: () => void) => {
     console.log(e);
 
     if (e.code) {
-      setTxResult(e);
+      switch (txType) {
+        case 'store':
+          setTxStoreResult(e);
+          break;
+        case 'instantiate':
+          setTxInstantiateResult(e);
+          break;
+        case 'execute':
+          setTxExecuteResult(e);
+          break;
+        case 'migrate':
+          setTxMigrateResult(e);
+          break;
+      }
     }
     rejectTx();
   };
 
   const txStoreCode = (resolveTx: () => void, rejectTx: () => void) => {
     cosmwasmStoreCode(walletState.mnemonic, storeWasmBinary, storeAccessConfig, storeAddress)
-      .then((result: any) => successTx(result, resolveTx))
-      .catch((e) => failedTx(e, rejectTx));
+      .then((result: any) => successTx(result, 'store', resolveTx))
+      .catch((e) => failedTx(e, 'store', rejectTx));
   };
 
   const txInstantiateContract = (resolveTx: () => void, rejectTx: () => void) => {
@@ -139,20 +168,20 @@ const CosmWasm = () => {
       instantiateLabel,
       instantiateArgs
     )
-      .then((result: any) => successTx(result, resolveTx))
-      .catch((e) => failedTx(e, rejectTx));
+      .then((result: any) => successTx(result, 'instantiate', resolveTx))
+      .catch((e) => failedTx(e, 'instantiate', rejectTx));
   };
 
   const txExecuteContract = (resolveTx: () => void, rejectTx: () => void) => {
     cosmwasmExecuteContract(walletState.mnemonic, executeContractAddress, executeFunds, executeArgs)
-      .then((result: any) => successTx(result, resolveTx))
-      .catch((e) => failedTx(e, rejectTx));
+      .then((result: any) => successTx(result, 'execute', resolveTx))
+      .catch((e) => failedTx(e, 'execute', rejectTx));
   };
 
   const txMigrateContract = (resolveTx: () => void, rejectTx: () => void) => {
     cosmwasmMigrateContract(walletState.mnemonic, migrateContractAddress, migrateCodeId, migrateArgs)
-      .then((result: any) => successTx(result, resolveTx))
-      .catch((e) => failedTx(e, rejectTx));
+      .then((result: any) => successTx(result, 'migrate', resolveTx))
+      .catch((e) => failedTx(e, 'migrate', rejectTx));
   };
 
   const tabList = [
@@ -162,24 +191,7 @@ const CosmWasm = () => {
     { name: 'Migrate', action: txMigrateContract },
   ];
 
-  const resetTab = () => {
-    setStoreWasmBinary(new Uint8Array());
-    setStoreAccessConfig(0);
-    setStoreAddress('');
-    setInstantiateCodeId('');
-    setInstantiateLabel('');
-    setInstantiateArgs('');
-    setExecuteContractAddress('');
-    setExecuteFunds('');
-    setExecuteArgs('');
-    setMigrateContractAddress('');
-    setMigrateCodeId('');
-    setMigrateArgs('');
-    setTxResult(initializeTransactionResult);
-  };
-
   const changeTab = (tabIndex: number) => {
-    resetTab();
     setTab(tabIndex);
   };
 
@@ -249,7 +261,7 @@ const CosmWasm = () => {
           <RightContent>
             <InputWrapRight>
               <Label>Transaction Result</Label>
-              <TxResult result={txResult} />
+              <TxResult result={txStoreResult} />
             </InputWrapRight>
           </RightContent>
         </TabContent>
@@ -314,7 +326,7 @@ const CosmWasm = () => {
           <RightContent>
             <InputWrapRight>
               <Label>Transaction Result</Label>
-              <TxResult result={txResult} />
+              <TxResult result={txInstantiateResult} />
             </InputWrapRight>
           </RightContent>
         </TabContent>
@@ -367,7 +379,7 @@ const CosmWasm = () => {
           <RightContent>
             <InputWrapRight>
               <Label>Transaction Result</Label>
-              <TxResult result={txResult} />
+              <TxResult result={txExecuteResult} />
             </InputWrapRight>
           </RightContent>
         </TabContent>
@@ -420,7 +432,7 @@ const CosmWasm = () => {
           <RightContent>
             <InputWrapRight>
               <Label>Transaction Result</Label>
-              <TxResult result={txResult} />
+              <TxResult result={txMigrateResult} />
             </InputWrapRight>
           </RightContent>
         </TabContent>

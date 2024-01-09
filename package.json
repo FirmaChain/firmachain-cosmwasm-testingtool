@@ -61,7 +61,9 @@
   },
   "scripts": {
     "start": "react-app-env --env-file=.env start",
-    "build": "cross-env GENERATE_SOURCEMAP=false react-app-env --env-file=.env build"
+    "build": "cross-env GENERATE_SOURCEMAP=false react-app-env --env-file=.env build",
+    "deploy-testnet": "aws s3 sync ./build s3://deploy-ecosystem/testnet/cosmwasm --profile=firmachain-deploy --delete",
+    "invalidate-testnet": "aws cloudfront create-invalidation --profile=firmachain-deploy --distribution-id E1QL119PNJ27VX --paths '/*'"
   },
   "eslintConfig": {
     "extends": [
