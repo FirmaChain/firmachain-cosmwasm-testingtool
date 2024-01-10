@@ -145,7 +145,7 @@ const CosmWasm = () => {
 
   const queryGetContractSmartQueryData = () => {
     cosmwasmGetContractSmartQueryData(queryContractAddress, queryJSONString)
-      .then((result: any) => successQuery(result))
+      .then((result: any) => successQuery({ result: JSON.parse(result.result) }))
       .catch((e) => failedQuery(e));
   };
 
