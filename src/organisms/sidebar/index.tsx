@@ -46,12 +46,6 @@ const CosmWasm = () => {
 
   const [queryResult, setQueryResult] = useState<any>();
 
-  useEffect(() => {
-    setQueryCodeId('');
-    setQueryContractAddress('');
-    setQueryResult(null);
-  }, [queryType]);
-
   const isActiveQuery = () => {
     switch (queryType) {
       case 0:
