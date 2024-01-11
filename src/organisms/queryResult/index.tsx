@@ -10,7 +10,6 @@ const QueryResult = ({ result }: IProps) => {
   const [rawString, setRawString] = useState('');
 
   useEffect(() => {
-    console.log(result);
     try {
       setRawString(JSON.stringify(result, null, 4));
     } catch (e) {

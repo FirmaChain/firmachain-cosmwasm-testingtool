@@ -101,3 +101,19 @@ export const QueryButton = styled.div<{ isOpen: boolean }>`
   text-align: center;
   line-height: 36px;
 `;
+
+export const ClearButton = styled.div`
+  position: absolute;
+  z-index: 1000;
+  top: 20px;
+  right: 20px;
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #8d8d8d;
+  background-color: rgba(52, 54, 62, 0.75);
+  cursor: pointer;
+  font-size: 1.4rem;
+  border-radius: 8px;
+`;

@@ -55,6 +55,7 @@ export const TabMenu = styled.div`
 `;
 
 export const TabContents = styled.div<{ currentTab: number }>`
+  position: relative;
   width: calc(100% - 80px);
   flex: 0 100%;
   display: flex;
@@ -197,4 +198,26 @@ export const SmallButton = styled.div`
   cursor: pointer;
   font-size: 1.22rem;
   border-radius: 4px;
+`;
+
+export const ClearWrapper = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+`;
+
+export const ClearButton = styled.div`
+  position: absolute;
+  z-index: 1000;
+  top: 20px;
+  right: 40px;
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #8d8d8d;
+  background-color: rgba(52, 54, 62, 0.75);
+  cursor: pointer;
+  font-size: 1.4rem;
+  border-radius: 8px;
 `;

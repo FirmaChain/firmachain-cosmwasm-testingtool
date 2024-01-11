@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { rootState } from '../../redux/reducers';
-import { modalActions } from '../../redux/action';
+import { modalActions, cosmwasmActions } from '../../redux/action';
 import useFirma from '../../utils/wallet';
 
 import InputFile from '../../components/inputFile';
@@ -26,6 +26,8 @@ import {
   Label,
   GeneralButton,
   SmallButton,
+  ClearWrapper,
+  ClearButton,
 } from './styles';
 
 export interface TransactionResult {
@@ -65,20 +67,22 @@ const CosmWasm = () => {
 
   const walletState = useSelector((state: rootState) => state.wallet);
 
+  const { store, instantiate, execute, migrate } = useSelector((state: rootState) => state.cosmwasm);
+
   const [currentTab, setTab] = useState(0);
   const [storeWasmBinary, setStoreWasmBinary] = useState<Uint8Array>(new Uint8Array());
-  const [storeAccessConfig, setStoreAccessConfig] = useState(0);
-  const [storeAddress, setStoreAddress] = useState('');
-  const [instantiateCodeId, setInstantiateCodeId] = useState('');
-  const [instantiateFunds, setInstantiaFunds] = useState('');
-  const [instantiateLabel, setInstantiateLabel] = useState('');
-  const [instantiateArgs, setInstantiateArgs] = useState('');
-  const [executeContractAddress, setExecuteContractAddress] = useState('');
-  const [executeFunds, setExecuteFunds] = useState('');
-  const [executeArgs, setExecuteArgs] = useState('');
-  const [migrateContractAddress, setMigrateContractAddress] = useState('');
-  const [migrateCodeId, setMigrateCodeId] = useState('');
-  const [migrateArgs, setMigrateArgs] = useState('');
+  // const [storeAccessConfig, setStoreAccessConfig] = useState(0);
+  // const [storeAddress, setStoreAddress] = useState('');
+  // const [instantiateCodeId, setInstantiateCodeId] = useState('');
+  // const [instantiateFunds, setInstantiaFunds] = useState('');
+  // const [instantiateLabel, setInstantiateLabel] = useState('');
+  // const [instantiateArgs, setInstantiateArgs] = useState('');
+  // const [executeContractAddress, setExecuteContractAddress] = useState('');
+  // const [executeFunds, setExecuteFunds] = useState('');
+  // const [executeArgs, setExecuteArgs] = useState('');
+  // const [migrateContractAddress, setMigrateContractAddress] = useState('');
+  // const [migrateCodeId, setMigrateCodeId] = useState('');
+  // const [migrateArgs, setMigrateArgs] = useState('');
 
   const [isActiveStoreCode, setActiveStoreCode] = useState(false);
   const [isActiveInstantiateContract, setActiveInstantiateContract] = useState(false);
@@ -94,21 +98,21 @@ const CosmWasm = () => {
     setActiveStoreCode(
       walletState.mnemonic !== '' &&
         storeWasmBinary.length > 0 &&
-        (storeAccessConfig === 1 ? isValidAddress(storeAddress) : true)
+        (store.accessConfig === 1 ? isValidAddress(store.address) : true)
     );
-  }, [storeWasmBinary, storeAccessConfig, storeAddress]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [storeWasmBinary, store]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    setActiveInstantiateContract(walletState.mnemonic !== '' && instantiateCodeId !== '' && instantiateLabel !== '');
-  }, [instantiateCodeId, instantiateFunds, instantiateLabel, instantiateArgs]); // eslint-disable-line react-hooks/exhaustive-deps
+    setActiveInstantiateContract(walletState.mnemonic !== '' && instantiate.codeId !== '' && instantiate.label !== '');
+  }, [instantiate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    setActiveExecuteContract(walletState.mnemonic !== '' && executeContractAddress !== '');
-  }, [executeContractAddress, executeFunds, executeArgs]); // eslint-disable-line react-hooks/exhaustive-deps
+    setActiveExecuteContract(walletState.mnemonic !== '' && execute.address !== '');
+  }, [execute]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    setActiveMigrateContract(walletState.mnemonic !== '' && migrateCodeId !== '' && migrateContractAddress !== '');
-  }, [migrateContractAddress, migrateCodeId, migrateArgs]); // eslint-disable-line react-hooks/exhaustive-deps
+    setActiveMigrateContract(walletState.mnemonic !== '' && migrate.codeId !== '' && migrate.address !== '');
+  }, [migrate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const successTx = (result: any, txType: string, resolveTx: () => void) => {
     if (result.code === 0) {
@@ -155,7 +159,7 @@ const CosmWasm = () => {
   };
 
   const txStoreCode = (resolveTx: () => void, rejectTx: () => void) => {
-    cosmwasmStoreCode(walletState.mnemonic, storeWasmBinary, storeAccessConfig, storeAddress)
+    cosmwasmStoreCode(walletState.mnemonic, storeWasmBinary, store.accessConfig, store.address)
       .then((result: any) => successTx(result, 'store', resolveTx))
       .catch((e) => failedTx(e, 'store', rejectTx));
   };
@@ -163,23 +167,23 @@ const CosmWasm = () => {
   const txInstantiateContract = (resolveTx: () => void, rejectTx: () => void) => {
     cosmwasmInstantiateContract(
       walletState.mnemonic,
-      instantiateCodeId,
-      instantiateFunds,
-      instantiateLabel,
-      instantiateArgs
+      instantiate.codeId,
+      instantiate.funds,
+      instantiate.label,
+      instantiate.args
     )
       .then((result: any) => successTx(result, 'instantiate', resolveTx))
       .catch((e) => failedTx(e, 'instantiate', rejectTx));
   };
 
   const txExecuteContract = (resolveTx: () => void, rejectTx: () => void) => {
-    cosmwasmExecuteContract(walletState.mnemonic, executeContractAddress, executeFunds, executeArgs)
+    cosmwasmExecuteContract(walletState.mnemonic, execute.address, execute.funds, execute.args)
       .then((result: any) => successTx(result, 'execute', resolveTx))
       .catch((e) => failedTx(e, 'execute', rejectTx));
   };
 
   const txMigrateContract = (resolveTx: () => void, rejectTx: () => void) => {
-    cosmwasmMigrateContract(walletState.mnemonic, migrateContractAddress, migrateCodeId, migrateArgs)
+    cosmwasmMigrateContract(walletState.mnemonic, migrate.address, migrate.codeId, migrate.args)
       .then((result: any) => successTx(result, 'migrate', resolveTx))
       .catch((e) => failedTx(e, 'migrate', rejectTx));
   };
@@ -209,6 +213,71 @@ const CosmWasm = () => {
     modalActions.handleModalJSON(true);
   };
 
+  const setStoreAccessConfig = (value: number) => {
+    cosmwasmActions.handleStoreData(value, store.address);
+  };
+
+  const setStoreAddress = (value: string) => {
+    cosmwasmActions.handleStoreData(store.accessConfig, value);
+  };
+
+  const setInstantiateCodeId = (value: string) => {
+    cosmwasmActions.handleInstantiateData(value, instantiate.funds, instantiate.label, instantiate.args);
+  };
+
+  const setInstantiaFunds = (value: string) => {
+    cosmwasmActions.handleInstantiateData(instantiate.codeId, value, instantiate.label, instantiate.args);
+  };
+
+  const setInstantiateLabel = (value: string) => {
+    cosmwasmActions.handleInstantiateData(instantiate.codeId, instantiate.funds, value, instantiate.args);
+  };
+
+  const setInstantiateArgs = (value: string) => {
+    cosmwasmActions.handleInstantiateData(instantiate.codeId, instantiate.funds, instantiate.label, value);
+  };
+
+  const setExecuteContractAddress = (value: string) => {
+    cosmwasmActions.handleExecuteData(value, execute.funds, execute.args);
+  };
+
+  const setExecuteFunds = (value: string) => {
+    cosmwasmActions.handleExecuteData(execute.address, value, execute.args);
+  };
+
+  const setExecuteArgs = (value: string) => {
+    cosmwasmActions.handleExecuteData(execute.address, execute.funds, value);
+  };
+
+  const setMigrateContractAddress = (value: string) => {
+    cosmwasmActions.handleMigrateData(value, migrate.codeId, migrate.args);
+  };
+
+  const setMigrateCodeId = (value: string) => {
+    cosmwasmActions.handleMigrateData(migrate.address, value, migrate.args);
+  };
+
+  const setMigrateArgs = (value: string) => {
+    cosmwasmActions.handleMigrateData(migrate.address, migrate.codeId, value);
+  };
+
+  const onClickClearCosmwasm = () => {
+    switch (currentTab) {
+      case 0:
+        cosmwasmActions.handleStoreData(0, '');
+        break;
+      case 1:
+        cosmwasmActions.handleInstantiateData('', '', '', '');
+        break;
+      case 2:
+        cosmwasmActions.handleExecuteData('', '', '');
+        break;
+      case 3:
+        cosmwasmActions.handleMigrateData('', '', '');
+        break;
+    }
+  };
+
   return (
     <CosmWasmContainer>
       <TabMenuList currentTab={currentTab}>
@@ -220,6 +289,10 @@ const CosmWasm = () => {
       </TabMenuList>
       <TabContents currentTab={currentTab}>
         <TabContent>
+          <ClearWrapper>
+            <ClearButton onClick={() => onClickClearCosmwasm()}>Clear</ClearButton>
+          </ClearWrapper>
+
           <LeftContent>
             <InputWrap>
               <Label>Wasm binary file</Label>
@@ -232,7 +305,7 @@ const CosmWasm = () => {
               <Input>
                 <InputRadio
                   optionList={['Everybody', 'Only Address']}
-                  value={storeAccessConfig}
+                  value={store.accessConfig}
                   setValue={setStoreAccessConfig}
                 />
               </Input>
@@ -243,8 +316,8 @@ const CosmWasm = () => {
                 <InputText
                   placeholder={'Please enter the only address when selecting it.'}
                   regExp={/^[a-zA-Z0-9]*$/}
-                  disabled={storeAccessConfig === 0}
-                  value={storeAddress}
+                  disabled={store.accessConfig === 0}
+                  value={store.address}
                   setValue={setStoreAddress}
                 />
               </Input>
@@ -266,6 +339,10 @@ const CosmWasm = () => {
           </RightContent>
         </TabContent>
         <TabContent>
+          <ClearWrapper>
+            <ClearButton onClick={() => onClickClearCosmwasm()}>Clear</ClearButton>
+          </ClearWrapper>
+
           <LeftContent>
             <InputGroup>
               <InputWrapHalf>
@@ -274,7 +351,7 @@ const CosmWasm = () => {
                   <InputText
                     placeholder={'Please enter the Code number.'}
                     regExp={/^[0-9]*$/}
-                    value={instantiateCodeId}
+                    value={instantiate.codeId}
                     setValue={setInstantiateCodeId}
                   />
                 </Input>
@@ -285,7 +362,7 @@ const CosmWasm = () => {
                   <InputText
                     placeholder={'Please enter the fct amount'}
                     regExp={/^[0-9.]*$/}
-                    value={instantiateFunds}
+                    value={instantiate.funds}
                     setValue={setInstantiaFunds}
                   />
                 </Input>
@@ -296,7 +373,7 @@ const CosmWasm = () => {
               <Input>
                 <InputText
                   placeholder={'Please enter the contract label.'}
-                  value={instantiateLabel}
+                  value={instantiate.label}
                   setValue={setInstantiateLabel}
                 />
               </Input>
@@ -304,12 +381,12 @@ const CosmWasm = () => {
             <InputWrap>
               <Label>
                 Init args (JSON)
-                <SmallButton onClick={() => onClickJSONModal(instantiateArgs)}>Check JSON</SmallButton>
+                <SmallButton onClick={() => onClickJSONModal(instantiate.args)}>Check JSON</SmallButton>
               </Label>
               <Input>
                 <InputTextArea
                   placeholder={'Please enter the data valid JSON format'}
-                  value={instantiateArgs}
+                  value={instantiate.args}
                   setValue={setInstantiateArgs}
                 />
               </Input>
@@ -331,6 +408,10 @@ const CosmWasm = () => {
           </RightContent>
         </TabContent>
         <TabContent>
+          <ClearWrapper>
+            <ClearButton onClick={() => onClickClearCosmwasm()}>Clear</ClearButton>
+          </ClearWrapper>
+
           <LeftContent>
             <InputWrap>
               <Label>Contract Address</Label>
@@ -338,7 +419,7 @@ const CosmWasm = () => {
                 <InputText
                   placeholder={'Please enter the contract address.'}
                   regExp={/^[a-zA-Z0-9]*$/}
-                  value={executeContractAddress}
+                  value={execute.address}
                   setValue={setExecuteContractAddress}
                 />
               </Input>
@@ -349,7 +430,7 @@ const CosmWasm = () => {
                 <InputText
                   placeholder={'Please enter the fct amount'}
                   regExp={/^[0-9.]*$/}
-                  value={executeFunds}
+                  value={execute.funds}
                   setValue={setExecuteFunds}
                 />
               </Input>
@@ -357,12 +438,12 @@ const CosmWasm = () => {
             <InputWrap>
               <Label>
                 Send args (JSON)
-                <SmallButton onClick={() => onClickJSONModal(executeArgs)}>Check JSON</SmallButton>
+                <SmallButton onClick={() => onClickJSONModal(execute.args)}>Check JSON</SmallButton>
               </Label>
               <Input>
                 <InputTextArea
                   placeholder={'Please enter the data valid JSON format'}
-                  value={executeArgs}
+                  value={execute.args}
                   setValue={setExecuteArgs}
                 />
               </Input>
@@ -384,6 +465,10 @@ const CosmWasm = () => {
           </RightContent>
         </TabContent>
         <TabContent>
+          <ClearWrapper>
+            <ClearButton onClick={() => onClickClearCosmwasm()}>Clear</ClearButton>
+          </ClearWrapper>
+
           <LeftContent>
             <InputWrap>
               <Label>Contract Address</Label>
@@ -391,7 +476,7 @@ const CosmWasm = () => {
                 <InputText
                   placeholder={'Please enter the contract address.'}
                   regExp={/^[a-zA-Z0-9]*$/}
-                  value={migrateContractAddress}
+                  value={migrate.address}
                   setValue={setMigrateContractAddress}
                 />
               </Input>
@@ -402,7 +487,7 @@ const CosmWasm = () => {
                 <InputText
                   placeholder={'Please enter the Code number.'}
                   regExp={/^[0-9]*$/}
-                  value={migrateCodeId}
+                  value={migrate.codeId}
                   setValue={setMigrateCodeId}
                 />
               </Input>
@@ -410,12 +495,12 @@ const CosmWasm = () => {
             <InputWrap>
               <Label>
                 Migrate args (JSON)
-                <SmallButton onClick={() => onClickJSONModal(migrateArgs)}>Check JSON</SmallButton>
+                <SmallButton onClick={() => onClickJSONModal(migrate.args)}>Check JSON</SmallButton>
               </Label>
               <Input>
                 <InputTextArea
                   placeholder={'Please enter the data valid JSON format'}
-                  value={migrateArgs}
+                  value={migrate.args}
                   setValue={setMigrateArgs}
                 />
               </Input>

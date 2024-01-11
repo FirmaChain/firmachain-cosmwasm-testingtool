@@ -9,6 +9,15 @@ const persistConfig = {
   key: 'root',
   storage,
   blacklist: ['modal'],
+  version: 1,
+  migrate: (state: any) => {
+    if (state && state._persist && state._persist.version < 1) {
+      if (state.query && !state.query.queryResult) {
+        state.query.queryResult = ['', '', '', '', '', '', '', '', ''];
+      }
+    }
+    return Promise.resolve(state);
+  },
 };
 
 export default createStore(persistReducer(persistConfig, reducers), applyMiddleware(ReduxThunk));

@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Drawer } from '@mui/material';
-import { modalActions } from '../../redux/action';
-import useFirma from '../../utils/wallet';
 import { useSnackbar } from 'notistack';
+import { useSelector } from 'react-redux';
+
+import { modalActions, queryActions } from '../../redux/action';
+import { rootState } from '../../redux/reducers';
+import useFirma from '../../utils/wallet';
 
 import InputSelect from '../../components/inputSelect';
 import InputText from '../../components/inputText';
 import InputTextArea from '../../components/inputTextArea';
 import QueryResult from '../queryResult';
+
 import {
   SidebarContainer,
   TopContent,
@@ -19,6 +23,7 @@ import {
   GeneralButton,
   SmallButton,
   QueryButton,
+  ClearButton,
 } from './styles';
 
 const CosmWasm = () => {
@@ -35,16 +40,14 @@ const CosmWasm = () => {
   } = useFirma();
 
   const { enqueueSnackbar } = useSnackbar();
-
-  const [queryType, setQueryType] = useState(0);
-  const [queryCodeId, setQueryCodeId] = useState('');
-  const [queryContractAddress, setQueryContractAddress] = useState('');
-  const [queryHexString, setQueryHexString] = useState('');
-  const [queryJSONString, setQueryJSONString] = useState('');
+  const { queryType, queryCode, queryContractAddress, queryHex, queryJSON, queryResult } = useSelector(
+    (state: rootState) => state.query
+  );
 
   const [isOpen, setOpen] = useState(false);
-
-  const [queryResult, setQueryResult] = useState<any>();
+  const currentResult = useMemo(() => {
+    return queryResult && queryResult[queryType] !== '' ? JSON.parse(queryResult[queryType]) : 'NULL';
+  }, [queryResult, queryType]);
 
   const isActiveQuery = () => {
     switch (queryType) {
@@ -53,38 +56,38 @@ const CosmWasm = () => {
         return true;
       case 1:
       case 3:
-        return queryCodeId !== '';
+        return queryCode !== '';
       case 4:
       case 5:
       case 6:
         return queryContractAddress !== '';
       case 7:
-        return queryContractAddress !== '' && queryHexString !== '';
+        return queryContractAddress !== '' && queryHex !== '';
       case 8:
-        return queryContractAddress !== '' && queryJSONString !== '';
+        return queryContractAddress !== '' && queryJSON !== '';
     }
 
     return false;
   };
 
-  const isEnableQueryCodeId = () => {
+  const isEnableQueryCodeId = useMemo(() => {
     return [1, 3].includes(queryType);
-  };
+  }, [queryType]);
 
-  const isEnableQueryContractAddress = () => {
+  const isEnableQueryContractAddress = useMemo(() => {
     return [4, 5, 6].includes(queryType);
-  };
+  }, [queryType]);
 
-  const isEnableQueryHexString = () => {
+  const isEnableQueryHexString = useMemo(() => {
     return [7].includes(queryType);
-  };
+  }, [queryType]);
 
-  const isEnableQueryJSONData = () => {
+  const isEnableQueryJSONData = useMemo(() => {
     return [8].includes(queryType);
-  };
+  }, [queryType]);
 
   const successQuery = (result: any) => {
-    setQueryResult(result);
+    queryActions.handleQueryResult(queryType, JSON.stringify(result));
   };
 
   const failedQuery = (e: any) => {
@@ -92,7 +95,7 @@ const CosmWasm = () => {
       variant: 'error',
       autoHideDuration: 3000,
     });
-    setQueryResult('ERROR');
+    queryActions.handleQueryResult(queryType, 'ERROR');
   };
 
   const queryGetCodeList = () => {
@@ -102,7 +105,7 @@ const CosmWasm = () => {
   };
 
   const queryGetCodeData = () => {
-    cosmwasmGetCodeData(queryCodeId)
+    cosmwasmGetCodeData(queryCode)
       .then((result: any) => successQuery(result))
       .catch((e) => failedQuery(e));
   };
@@ -114,7 +117,7 @@ const CosmWasm = () => {
   };
 
   const queryGetContractListFromCodeId = () => {
-    cosmwasmGetContractListFromCodeId(queryCodeId)
+    cosmwasmGetContractListFromCodeId(queryCode)
       .then((result: any) => successQuery(result))
       .catch((e) => failedQuery(e));
   };
@@ -138,13 +141,13 @@ const CosmWasm = () => {
   };
 
   const queryGetContractRawQueryData = () => {
-    cosmwasmGetContractRawQueryData(queryContractAddress, queryHexString)
+    cosmwasmGetContractRawQueryData(queryContractAddress, queryHex)
       .then((result: any) => successQuery(result))
       .catch((e) => failedQuery(e));
   };
 
   const queryGetContractSmartQueryData = () => {
-    cosmwasmGetContractSmartQueryData(queryContractAddress, queryJSONString)
+    cosmwasmGetContractSmartQueryData(queryContractAddress, queryJSON)
       .then((result: any) => successQuery({ result: JSON.parse(result.result) }))
       .catch((e) => failedQuery(e));
   };
@@ -176,6 +179,16 @@ const CosmWasm = () => {
     setOpen(!isOpen);
   };
 
+  const onClickClearQueryData = () => {
+    queryActions.handleQueryType(0);
+    queryActions.handleQueryCode('');
+    queryActions.handleQueryContractAddress('');
+    queryActions.handleQueryHex('');
+    queryActions.handleQueryJSON('');
+
+    for (let i = 0; i < 9; i++) queryActions.handleQueryResult(i, '');
+  };
+
   return (
     <>
       <QueryButton isOpen={isOpen} onClick={toggleDrawer}>
@@ -199,27 +212,28 @@ const CosmWasm = () => {
         }}
       >
         <SidebarContainer>
+          <ClearButton onClick={() => onClickClearQueryData()}>Clear All</ClearButton>
           <TopContent>
             <InputWrap>
               <Label>Query</Label>
               <Input>
-                <InputSelect optionList={queryList} value={queryType} setValue={setQueryType} />
+                <InputSelect optionList={queryList} value={queryType} setValue={queryActions.handleQueryType} />
               </Input>
             </InputWrap>
-            {isEnableQueryCodeId() && (
+            {isEnableQueryCodeId && (
               <InputWrap>
                 <Label>Code ID</Label>
                 <Input>
                   <InputText
                     placeholder={'Please enter the Code number.'}
                     regExp={/^[0-9]*$/}
-                    value={queryCodeId}
-                    setValue={setQueryCodeId}
+                    value={queryCode}
+                    setValue={queryActions.handleQueryCode}
                   />
                 </Input>
               </InputWrap>
             )}
-            {(isEnableQueryContractAddress() || isEnableQueryHexString() || isEnableQueryJSONData()) && (
+            {(isEnableQueryContractAddress || isEnableQueryHexString || isEnableQueryJSONData) && (
               <InputWrap>
                 <Label>Contract Address</Label>
                 <Input>
@@ -227,34 +241,34 @@ const CosmWasm = () => {
                     placeholder={'Please enter the contract address.'}
                     regExp={/^[a-zA-Z0-9]*$/}
                     value={queryContractAddress}
-                    setValue={setQueryContractAddress}
+                    setValue={queryActions.handleQueryContractAddress}
                   />
                 </Input>
               </InputWrap>
             )}
-            {isEnableQueryHexString() && (
+            {isEnableQueryHexString && (
               <InputWrap>
                 <Label>Hex String</Label>
                 <Input>
                   <InputText
                     placeholder={'Please enter the contract address.'}
-                    value={queryHexString}
-                    setValue={setQueryHexString}
+                    value={queryHex}
+                    setValue={queryActions.handleQueryHex}
                   />
                 </Input>
               </InputWrap>
             )}
-            {isEnableQueryJSONData() && (
+            {isEnableQueryJSONData && (
               <InputWrap>
                 <Label>
                   JSON
-                  <SmallButton onClick={() => onClickJSONModal(queryJSONString)}>Check JSON</SmallButton>
+                  <SmallButton onClick={() => onClickJSONModal(queryJSON)}>Check JSON</SmallButton>
                 </Label>
                 <Input>
                   <InputTextArea
                     placeholder={'Please enter the data valid JSON format'}
-                    value={queryJSONString}
-                    setValue={setQueryJSONString}
+                    value={queryJSON}
+                    setValue={queryActions.handleQueryJSON}
                   />
                 </Input>
               </InputWrap>
@@ -271,7 +285,7 @@ const CosmWasm = () => {
           <BottomContent>
             <InputWrapRight>
               <Label>Result</Label>
-              <QueryResult result={queryResult} />
+              <QueryResult result={currentResult} />
             </InputWrapRight>
           </BottomContent>
         </SidebarContainer>
