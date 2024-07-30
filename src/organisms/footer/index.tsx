@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <FooterContainer>
       <FooterWrapper>
-        <Copyright>Copyright © FirmaChain 2022</Copyright>
+        <Copyright>ⓒ FIRMACHAIN Pte. Ltd. | All Right Reserved.</Copyright>
       </FooterWrapper>
     </FooterContainer>
   );

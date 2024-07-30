@@ -46,7 +46,11 @@ const CosmWasm = () => {
 
   const [isOpen, setOpen] = useState(false);
   const currentResult = useMemo(() => {
-    return queryResult && queryResult[queryType] !== '' ? JSON.parse(queryResult[queryType]) : 'NULL';
+    try {
+      return queryResult && queryResult[queryType] !== '' ? JSON.parse(queryResult[queryType]) : 'NULL';
+    } catch (e) {
+      return 'NULL';
+    }
   }, [queryResult, queryType]);
 
   const isActiveQuery = () => {

@@ -71,18 +71,6 @@ const CosmWasm = () => {
 
   const [currentTab, setTab] = useState(0);
   const [storeWasmBinary, setStoreWasmBinary] = useState<Uint8Array>(new Uint8Array());
-  // const [storeAccessConfig, setStoreAccessConfig] = useState(0);
-  // const [storeAddress, setStoreAddress] = useState('');
-  // const [instantiateCodeId, setInstantiateCodeId] = useState('');
-  // const [instantiateFunds, setInstantiaFunds] = useState('');
-  // const [instantiateLabel, setInstantiateLabel] = useState('');
-  // const [instantiateArgs, setInstantiateArgs] = useState('');
-  // const [executeContractAddress, setExecuteContractAddress] = useState('');
-  // const [executeFunds, setExecuteFunds] = useState('');
-  // const [executeArgs, setExecuteArgs] = useState('');
-  // const [migrateContractAddress, setMigrateContractAddress] = useState('');
-  // const [migrateCodeId, setMigrateCodeId] = useState('');
-  // const [migrateArgs, setMigrateArgs] = useState('');
 
   const [isActiveStoreCode, setActiveStoreCode] = useState(false);
   const [isActiveInstantiateContract, setActiveInstantiateContract] = useState(false);
