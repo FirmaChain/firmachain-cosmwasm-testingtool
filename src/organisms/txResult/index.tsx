@@ -39,9 +39,6 @@ const TxResult = ({ result }: IProps) => {
                             </PointContent>
                         </>
                     )}
-
-                    <Label>rawLog</Label>
-                    <RawLog>{result.rawLog}</RawLog>
                 </>
             )}
         </ResultContainer>
