@@ -621,9 +621,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firmachain/firma-js@npm:^0.3.1":
-  version: 0.3.1
-  resolution: "@firmachain/firma-js@npm:0.3.1"
+"@firmachain/firma-js@npm:0.3.2":
+  version: 0.3.2
+  resolution: "@firmachain/firma-js@npm:0.3.2"
   dependencies:
     "@cosmjs/amino": "npm:0.33.1"
     "@cosmjs/math": "npm:0.33.1"
@@ -642,7 +642,7 @@ __metadata:
     pako: "npm:2.0.2"
     protobufjs: "npm:6.10.2"
     readline-sync: "npm:1.4.10"
-  checksum: 10c0/c99ac12d849d7dfee4cb0413e2f6df8734b2c34cdc1d617723e364af436a729a87e5f69e577c2ae367aed1dc487460d1ae93947f2cfbe89a35f847915f31cabe
+  checksum: 10c0/7d1bbef5ecaa8388521f44d857d4f377e846aacd5ddf110769e4e29977c98ef10eaf686d2693bf8a1ce13b77e24885b535614ab383d0f5682a5f37ac83727746
   languageName: node
   linkType: hard
 
@@ -3465,7 +3465,7 @@ __metadata:
   dependencies:
     "@emotion/react": "npm:^11.5.0"
     "@emotion/styled": "npm:^11.3.0"
-    "@firmachain/firma-js": "npm:^0.3.1"
+    "@firmachain/firma-js": "npm:0.3.2"
     "@firmachain/firma-js-ledger": "npm:^0.0.4"
     "@ledgerhq/hw-transport-webhid": "npm:^6.20.0"
     "@mui/icons-material": "npm:^5.8.4"
