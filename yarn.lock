@@ -621,9 +621,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@firmachain/firma-js@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@firmachain/firma-js@npm:0.3.2"
+"@firmachain/firma-js@npm:0.3.3":
+  version: 0.3.3
+  resolution: "@firmachain/firma-js@npm:0.3.3"
   dependencies:
     "@cosmjs/amino": "npm:0.33.1"
     "@cosmjs/math": "npm:0.33.1"
@@ -635,6 +635,7 @@ __metadata:
     "@types/pako": "npm:2.0.0"
     axios: "npm:0.27.2"
     big-number: "npm:2.0.0"
+    bignumber.js: "npm:^9.3.0"
     cosmjs-types: "npm:0.9.0"
     crypto-js: "npm:4.1.1"
     fast-deep-equal: "npm:^3.1.3"
@@ -642,7 +643,7 @@ __metadata:
     pako: "npm:2.0.2"
     protobufjs: "npm:6.10.2"
     readline-sync: "npm:1.4.10"
-  checksum: 10c0/7d1bbef5ecaa8388521f44d857d4f377e846aacd5ddf110769e4e29977c98ef10eaf686d2693bf8a1ce13b77e24885b535614ab383d0f5682a5f37ac83727746
+  checksum: 10c0/e5a437294d0b95a7dbd34c323ac6ad2be14d9b116b6c4fec63b375c26878f82a30c234b16ea8677f713f27a2a62a6f86155d8c89e880c1bc95921e00e28eda5b
   languageName: node
   linkType: hard
 
@@ -2141,6 +2142,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bignumber.js@npm:^9.3.0":
+  version: 9.3.1
+  resolution: "bignumber.js@npm:9.3.1"
+  checksum: 10c0/61342ba5fe1c10887f0ecf5be02ff6709271481aff48631f86b4d37d55a99b87ce441cfd54df3d16d10ee07ceab7e272fc0be430c657ffafbbbf7b7d631efb75
+  languageName: node
+  linkType: hard
+
 "bindings@npm:^1.5.0":
   version: 1.5.0
   resolution: "bindings@npm:1.5.0"
@@ -3465,7 +3473,7 @@ __metadata:
   dependencies:
     "@emotion/react": "npm:^11.5.0"
     "@emotion/styled": "npm:^11.3.0"
-    "@firmachain/firma-js": "npm:0.3.2"
+    "@firmachain/firma-js": "npm:0.3.3"
     "@firmachain/firma-js-ledger": "npm:^0.0.4"
     "@ledgerhq/hw-transport-webhid": "npm:^6.20.0"
     "@mui/icons-material": "npm:^5.8.4"
