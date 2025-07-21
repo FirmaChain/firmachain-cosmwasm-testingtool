@@ -45,8 +45,14 @@ export default defineConfig(({ mode }) => {
             ...(env.NODE_ENV === 'production' ? [vitePluginBundleObfuscator(minimizeObfuscatorConfig)] : []),
         ],
 
+        preview: {
+            port: Number(env.PORT) || 3000,
+            host: true,
+            strictPort: false,
+        },
+
         server: {
-            port: 3000,
+            port: Number(env.PORT) || 3000,
             host: true,
             strictPort: false,
         },

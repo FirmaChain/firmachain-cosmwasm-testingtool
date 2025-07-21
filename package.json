@@ -7,7 +7,7 @@
     "dependencies": {
         "@emotion/react": "^11.5.0",
         "@emotion/styled": "^11.3.0",
-        "@firmachain/firma-js": "0.3.3",
+        "@firmachain/firma-js": "0.3.5",
         "@firmachain/firma-js-ledger": "^0.0.4",
         "@ledgerhq/hw-transport-webhid": "^6.20.0",
         "@mui/icons-material": "^5.8.4",
@@ -52,13 +52,14 @@
         "@types/styled-components": "^5.1.15",
         "@vitejs/plugin-react-swc": "^3.10.2",
         "typescript": "^4.1.2",
-        "vite": "^6.3.5",
+        "vite": "^7.0.4",
         "vite-plugin-bundle-obfuscator": "^1.7.0",
-        "vite-plugin-node-polyfills": "^0.23.0",
+        "vite-plugin-node-polyfills": "^0.24.0",
         "vite-tsconfig-paths": "^5.1.4"
     },
     "scripts": {
         "dev": "vite dev",
+        "preview": "vite preview",
         "build": "vite build",
         "deploy-testnet": "aws s3 sync ./build s3://deploy-ecosystem/testnet/cosmwasm --profile=firmachain-deploy --delete",
         "invalidate-testnet": "aws cloudfront create-invalidation --profile=firmachain-deploy --distribution-id E1QL119PNJ27VX --paths '/*'"
