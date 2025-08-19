@@ -116,8 +116,12 @@ const CosmWasm = () => {
         }
     }
 
-    const failedTx = (e: any, txType: string, rejectTx: () => void) => {
-        console.log(e)
+    const failedTx = (e: any, txType: string, rejectTx: (reason?: string) => void) => {
+        let reason: string = ''
+
+        if (e.message?.toLowerCase().includes('insufficient funds')) {
+            reason = 'Insufficient funds'
+        }
 
         if (e.code) {
             switch (txType) {
@@ -135,7 +139,7 @@ const CosmWasm = () => {
                     break
             }
         }
-        rejectTx()
+        rejectTx(reason)
     }
 
     const txStoreCode = (resolveTx: () => void, rejectTx: () => void) => {

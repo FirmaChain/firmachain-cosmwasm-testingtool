@@ -23,7 +23,7 @@ const TxResult = ({ result }: IProps) => {
 
     return (
         <ResultContainer>
-            {result.code !== -1 && (
+            {result?.pointContent && result.code !== -1 && (
                 <>
                     <StatusTypo isSuccess={result.code === 0}>{result.code === 0 ? 'Success' : 'Failed'}</StatusTypo>
                     <Label>hash</Label>
@@ -31,7 +31,7 @@ const TxResult = ({ result }: IProps) => {
                         {result.transactionHash}
                     </HashLink>
                     <Divider />
-                    {result.pointContent.name !== '' && (
+                    {result?.pointContent?.name !== '' && (
                         <>
                             <Label>{result.pointContent.name}</Label>
                             <PointContent onClick={() => onCopyData(result.pointContent.value)}>
