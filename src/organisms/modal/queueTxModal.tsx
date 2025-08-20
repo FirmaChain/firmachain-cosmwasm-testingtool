@@ -1,88 +1,86 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
-import ScaleLoader from 'react-spinners/ScaleLoader';
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useSnackbar } from 'notistack'
+import ScaleLoader from 'react-spinners/ScaleLoader'
 
-import { rootState } from '../../redux/reducers';
-import { Modal } from '../../components/modal';
-import { modalActions } from '../../redux/action';
+import { rootState } from '../../redux/reducers'
+import { Modal } from '../../components/modal'
+import { modalActions } from '../../redux/action'
 
 import {
-  QueueTxModalWidth,
-  ModalContainer,
-  ModalTitle,
-  ModalContent,
-  LoadingWrapper,
-  QueueTypoWrapper,
-  AfterTypo,
-  QueueIcon,
-  QueueTypoOne,
-  QueueTypoTwo,
-} from './styles';
+    QueueTxModalWidth,
+    ModalContainer,
+    ModalTitle,
+    ModalContent,
+    LoadingWrapper,
+    QueueTypoWrapper,
+    AfterTypo,
+    QueueIcon,
+    QueueTypoOne,
+    QueueTypoTwo,
+} from './styles'
 
 const QueueTxModal = () => {
-  const queueTxModalState = useSelector((state: rootState) => state.modal.queueTx);
-  const modalData = useSelector((state: rootState) => state.modal.data);
+    const queueTxModalState = useSelector((state: rootState) => state.modal.queueTx)
+    const modalData = useSelector((state: rootState) => state.modal.data)
 
-  const { enqueueSnackbar } = useSnackbar();
-  const [depend, setDepend] = useState(false);
+    const { enqueueSnackbar } = useSnackbar()
+    const [depend, setDepend] = useState(false)
 
-  useEffect(() => {
-    if (queueTxModalState) {
-      modalData.txAction(resolveTx, rejectTx);
+    useEffect(() => {
+        if (queueTxModalState) {
+            modalData.txAction(resolveTx, rejectTx)
+        }
+
+        const timer = setTimeout(() => {
+            setDepend(true)
+            clearTimeout(timer)
+        }, 15000)
+
+        return () => {
+            clearTimeout(timer)
+        }
+    }, [queueTxModalState]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    const resolveTx = () => {
+        enqueueSnackbar('Success Transaction', {
+            variant: 'success',
+            autoHideDuration: 2000,
+        })
+        closeQueueTxModal()
     }
 
-    const timer = setTimeout(() => {
-      setDepend(true);
-      clearTimeout(timer);
-    }, 15000);
+    const rejectTx = (reason?: string) => {
+        enqueueSnackbar(reason || 'Failed Transaction', {
+            variant: 'error',
+            autoHideDuration: 2000,
+        })
+        closeQueueTxModal()
+    }
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [queueTxModalState]); // eslint-disable-line react-hooks/exhaustive-deps
+    const closeQueueTxModal = () => {
+        modalActions.handleModalQueueTx(false)
+    }
 
-  const resolveTx = () => {
-    enqueueSnackbar('Success Transaction', {
-      variant: 'success',
-      autoHideDuration: 2000,
-    });
-    closeQueueTxModal();
-  };
+    return (
+        <Modal visible={queueTxModalState} closable={false} onClose={closeQueueTxModal} width={QueueTxModalWidth}>
+            <ModalContainer>
+                <ModalTitle>BROADCASTING TRANSACTION</ModalTitle>
+                <ModalContent>
+                    <LoadingWrapper>
+                        <ScaleLoader loading={true} color={'#3550DE80'} height={'50px'} width={'7px'} />
+                    </LoadingWrapper>
+                    <QueueTypoWrapper>
+                        <QueueTypoOne>It can take up from 5 to 15 seconds for a transaction to be completed.</QueueTypoOne>
+                        <AfterTypo isActive={depend}>
+                            <QueueIcon />
+                            <QueueTypoTwo>Depending on the condition of the network, it can take up to more than 15 seconds.</QueueTypoTwo>
+                        </AfterTypo>
+                    </QueueTypoWrapper>
+                </ModalContent>
+            </ModalContainer>
+        </Modal>
+    )
+}
 
-  const rejectTx = () => {
-    enqueueSnackbar('Failed Transaction', {
-      variant: 'error',
-      autoHideDuration: 2000,
-    });
-    closeQueueTxModal();
-  };
-
-  const closeQueueTxModal = () => {
-    modalActions.handleModalQueueTx(false);
-  };
-
-  return (
-    <Modal visible={queueTxModalState} closable={false} onClose={closeQueueTxModal} width={QueueTxModalWidth}>
-      <ModalContainer>
-        <ModalTitle>BROADCASTING TRANSACTION</ModalTitle>
-        <ModalContent>
-          <LoadingWrapper>
-            <ScaleLoader loading={true} color={'#3550DE80'} height={'50px'} width={'7px'} />
-          </LoadingWrapper>
-          <QueueTypoWrapper>
-            <QueueTypoOne>It can take up from 5 to 15 seconds for a transaction to be completed.</QueueTypoOne>
-            <AfterTypo isActive={depend}>
-              <QueueIcon />
-              <QueueTypoTwo>
-                Depending on the condition of the network, it can take up to more than 15 seconds.
-              </QueueTypoTwo>
-            </AfterTypo>
-          </QueueTypoWrapper>
-        </ModalContent>
-      </ModalContainer>
-    </Modal>
-  );
-};
-
-export default React.memo(QueueTxModal);
+export default React.memo(QueueTxModal)

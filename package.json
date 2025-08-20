@@ -1,91 +1,86 @@
 {
-  "name": "firmachain-contract",
-  "version": "0.1.0",
-  "private": true,
-  "homepage": "./",
-  "resolutions": {
-    "@types/react": "17.0.2",
-    "@types/react-dom": "17.0.2"
-  },
-  "dependencies": {
-    "@emotion/react": "^11.5.0",
-    "@emotion/styled": "^11.3.0",
-    "@firmachain/firma-js": "^0.2.48",
-    "@firmachain/firma-js-ledger": "^0.0.4",
-    "@ledgerhq/hw-transport-webhid": "^6.20.0",
-    "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.0.6",
-    "@nivo/core": "^0.74.0",
-    "@nivo/pie": "^0.74.0",
-    "@reduxjs/toolkit": "^1.6.2",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/crypto-js": "^4.0.2",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/react-redux": "^7.1.20",
-    "@types/react-responsive": "^8.0.2",
-    "@types/react-router-dom": "^5.3.2",
-    "@types/react-virtualized-auto-sizer": "^1.0.1",
-    "@types/react-window": "^1.8.5",
-    "@types/styled-components": "^5.1.15",
-    "axios": "^0.24.0",
-    "crypto-js": "^4.1.1",
-    "hamburger-react": "^2.4.1",
-    "moment": "^2.29.1",
-    "notistack": "^2.0.5",
-    "react": "^17.0.2",
-    "react-app-env": "^1.2.3",
-    "react-device-detect": "^2.1.2",
-    "react-dom": "^17.0.2",
-    "react-idle-timer": "^4.6.4",
-    "react-redux": "^7.2.6",
-    "react-responsive": "^8.2.0",
-    "react-router-dom": "^5.3.0",
-    "react-scripts": "4.0.3",
-    "react-select": "^5.1.0",
-    "react-spinners": "^0.11.0",
-    "react-virtualized-auto-sizer": "^1.0.6",
-    "react-window": "^1.8.6",
-    "recharts": "^2.1.6",
-    "redux": "^4.1.2",
-    "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.4.0",
-    "styled-components": "^5.3.3",
-    "styled-normalize": "^8.0.7",
-    "typescript": "^4.1.2",
-    "web-vitals": "^1.0.1"
-  },
-  "scripts": {
-    "start": "react-app-env --env-file=.env start",
-    "build": "cross-env GENERATE_SOURCEMAP=false react-app-env --env-file=.env build",
-    "deploy-testnet": "aws s3 sync ./build s3://deploy-ecosystem/testnet/cosmwasm --profile=firmachain-deploy --delete",
-    "invalidate-testnet": "aws cloudfront create-invalidation --profile=firmachain-deploy --distribution-id E1QL119PNJ27VX --paths '/*'"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "concurrently": "^6.2.1",
-    "cross-env": "^7.0.3",
-    "wait-on": "^6.0.0"
-  }
+    "name": "firmachain-contract",
+    "version": "0.1.0",
+    "type": "module",
+    "private": true,
+    "homepage": "./",
+    "dependencies": {
+        "@emotion/react": "^11.5.0",
+        "@emotion/styled": "^11.3.0",
+        "@firmachain/firma-js": "0.3.7",
+        "@firmachain/firma-js-ledger": "^0.0.4",
+        "@ledgerhq/hw-transport-webhid": "^6.20.0",
+        "@mui/icons-material": "^5.8.4",
+        "@mui/material": "^5.0.6",
+        "@nivo/core": "^0.74.0",
+        "@nivo/pie": "^0.74.0",
+        "@reduxjs/toolkit": "^1.6.2",
+        "ajv": "^8.17.1",
+        "axios": "^1.10.0",
+        "crypto-js": "^4.1.1",
+        "hamburger-react": "^2.4.1",
+        "moment": "^2.29.1",
+        "notistack": "^2.0.5",
+        "react": "^18.3.1",
+        "react-device-detect": "^2.1.2",
+        "react-dom": "^18.3.1",
+        "react-idle-timer": "^4.6.4",
+        "react-redux": "^7.2.6",
+        "react-responsive": "^8.2.0",
+        "react-router-dom": "^5.3.0",
+        "react-select": "^5.1.0",
+        "react-spinners": "^0.11.0",
+        "react-virtualized-auto-sizer": "^1.0.6",
+        "react-window": "^1.8.6",
+        "recharts": "^2.1.6",
+        "redux": "^4.1.2",
+        "redux-persist": "^6.0.0",
+        "redux-thunk": "^2.4.0",
+        "styled-components": "^5.3.11",
+        "styled-normalize": "^8.0.7",
+        "web-vitals": "^1.0.1"
+    },
+    "devDependencies": {
+        "@types/crypto-js": "^4.0.2",
+        "@types/node": "^20.19.2",
+        "@types/react-dom": "^18.3.1",
+        "@types/react-redux": "^7.1.20",
+        "@types/react-responsive": "^8.0.2",
+        "@types/react-router-dom": "^5.3.2",
+        "@types/react-virtualized-auto-sizer": "^1.0.1",
+        "@types/react-window": "^1.8.5",
+        "@types/styled-components": "^5.1.15",
+        "@vitejs/plugin-react-swc": "^3.10.2",
+        "typescript": "^4.1.2",
+        "vite": "^7.0.4",
+        "vite-plugin-bundle-obfuscator": "^1.7.0",
+        "vite-plugin-node-polyfills": "^0.24.0",
+        "vite-tsconfig-paths": "^5.1.4"
+    },
+    "scripts": {
+        "dev": "vite dev",
+        "preview": "vite preview",
+        "build": "vite build",
+        "deploy-testnet": "aws s3 sync ./build s3://deploy-ecosystem/testnet/cosmwasm --profile=firmachain-deploy --delete",
+        "invalidate-testnet": "aws cloudfront create-invalidation --profile=firmachain-deploy --distribution-id E1QL119PNJ27VX --paths '/*'"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "packageManager": "yarn@4.9.2"
 }
